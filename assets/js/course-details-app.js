@@ -1,14 +1,13 @@
 'use strict';
 
 /**
- * course-details-app.js — Course Details Page Logic v2.0
+ * course-details-app.js — Course Details Page Logic
  *
- * التغييرات عن النسخة القديمة:
- *   1. رقم الواتس بيتاخد من course.teacherPhone بدل WHATSAPP_NUMBER الثابت
- *   2. زرار "Enter Course" للكورسات المدفوعة
- *   3. Access Modal — email input + /api/course-access call
- *   4. شيل theme switcher المكرر (موجود في الـ HTML دلوقتي)
- *   5. تنظيف الـ CSP references القديمة
+ * التغيير الوحيد عن النسخة السابقة:
+ *   - الكورسات المدفوعة: زرار "Access Course" بيروح لـ /course/paid/:courseId
+ *   - الـ Worker هو اللي يتحقق من الـ cookie ويعمل redirect للـ Drive URL
+ *   - مفيش modal، مفيش /api/course-access، مفيش Drive URL في الـ frontend
+ *   - الكورسات المجانية: زرار "Start Learning Now" بيفتح driveUrl مباشرة (مش بيتغير)
  */
 
 (function () {
@@ -29,9 +28,10 @@
   var DOMAIN     = DATA.DOMAIN     || 'ttblabs.com';
 
   /**
-   * Default fallback WhatsApp — يتغير لرقم المدرس لو موجود
+   * Returns the WhatsApp number for a course.
+   * Falls back to platform default if teacherPhone is missing.
    * @param {object} course
-   * @returns {string} phone number without +
+   * @returns {string}
    */
   function getWhatsApp(course) {
     return (course.teacherPhone && String(course.teacherPhone).trim())
@@ -103,10 +103,10 @@
         'name':  course.instructor
       },
       'offers': {
-        '@type':          'Offer',
-        'price':          course.price.toFixed(2),
-        'priceCurrency':  'EGP',
-        'availability':   'https://schema.org/InStock'
+        '@type':         'Offer',
+        'price':         course.price.toFixed(2),
+        'priceCurrency': 'EGP',
+        'availability':  'https://schema.org/InStock'
       }
     });
 
@@ -114,9 +114,12 @@
       '@context': 'https://schema.org',
       '@type':    'BreadcrumbList',
       'itemListElement': [
-        { '@type': 'ListItem', 'position': 1, 'name': 'Home',    'item': window.location.origin + '/' },
-        { '@type': 'ListItem', 'position': 2, 'name': 'Courses', 'item': window.location.origin + '/course/' },
-        { '@type': 'ListItem', 'position': 3, 'name': course.title, 'item': window.location.href }
+        { '@type': 'ListItem', 'position': 1,
+          'name': 'Home',    'item': window.location.origin + '/' },
+        { '@type': 'ListItem', 'position': 2,
+          'name': 'Courses', 'item': window.location.origin + '/course/' },
+        { '@type': 'ListItem', 'position': 3,
+          'name': course.title, 'item': window.location.href }
       ]
     });
 
@@ -135,9 +138,9 @@
     }
 
     schemas.forEach(function (schema, idx) {
-      var el    = document.createElement('script');
-      el.type   = 'application/ld+json';
-      el.id     = 'jsonld-details-' + idx;
+      var el       = document.createElement('script');
+      el.type      = 'application/ld+json';
+      el.id        = 'jsonld-details-' + idx;
       el.textContent = JSON.stringify(schema);
       document.head.appendChild(el);
     });
@@ -162,10 +165,13 @@
 
   function buildWhatsAppLink(course) {
     var phone   = getWhatsApp(course);
-    var price   = course.price > 0 ? 'EGP ' + course.price.toFixed(2) : 'Free';
+    var price   = course.price > 0
+      ? 'EGP ' + course.price.toFixed(2)
+      : 'Free';
     var message = 'Hello, I want to purchase the course "' +
                   course.title + '" — Price: ' + price;
-    return 'https://wa.me/' + phone + '?text=' + encodeURIComponent(message);
+    return 'https://wa.me/' + phone +
+           '?text=' + encodeURIComponent(message);
   }
 
   /* ── Error Page ── */
@@ -181,7 +187,8 @@
         U.el('p',  { className: 'error-text',
                      textContent: 'The course you are looking for does not exist.' }),
         U.el('a',  { className: 'error-btn', href: '../index.html' }, [
-          U.el('i', { className: 'bi bi-arrow-left', aria: { hidden: 'true' } }),
+          U.el('i', { className: 'bi bi-arrow-left',
+                      aria: { hidden: 'true' } }),
           'Browse Courses'
         ])
       ])
@@ -194,11 +201,15 @@
     var ol = U.el('ol', { className: 'breadcrumb' });
 
     var li1 = U.el('li', { className: 'breadcrumb-item' });
-    li1.appendChild(U.el('a', { href: '../../index.html', textContent: 'Home' }));
+    li1.appendChild(U.el('a', {
+      href: '../../index.html', textContent: 'Home'
+    }));
     ol.appendChild(li1);
 
     var li2 = U.el('li', { className: 'breadcrumb-item' });
-    li2.appendChild(U.el('a', { href: '../index.html', textContent: 'Courses' }));
+    li2.appendChild(U.el('a', {
+      href: '../index.html', textContent: 'Courses'
+    }));
     ol.appendChild(li2);
 
     var li3 = U.el('li', {
@@ -220,7 +231,8 @@
     return U.el('header', { className: 'details-header' }, [
       U.el('div', { className: 'page-container' }, [
         U.el('a', { className: 'back-link', href: '../index.html' }, [
-          U.el('i', { className: 'bi bi-arrow-left', aria: { hidden: 'true' } }),
+          U.el('i', { className: 'bi bi-arrow-left',
+                      aria: { hidden: 'true' } }),
           'Back to Courses'
         ]),
         buildBreadcrumb(course),
@@ -232,7 +244,9 @@
   /* ── Learning Objectives ── */
 
   function buildObjectives(course) {
-    if (!course.learningObjectives || !course.learningObjectives.length) return null;
+    if (!course.learningObjectives || !course.learningObjectives.length) {
+      return null;
+    }
 
     var list = U.el('ul', { className: 'objectives-list' });
     course.learningObjectives.forEach(function (obj) {
@@ -248,7 +262,8 @@
       aria:      { label: 'What you will learn' }
     }, [
       U.el('h2', { className: 'details-section-title' }, [
-        U.el('i', { className: 'bi bi-lightbulb', aria: { hidden: 'true' } }),
+        U.el('i', { className: 'bi bi-lightbulb',
+                    aria: { hidden: 'true' } }),
         "What You'll Learn"
       ]),
       list
@@ -260,7 +275,7 @@
   function buildCurriculum(course) {
     if (!course.curriculum || !course.curriculum.length) return null;
 
-    var totalLessons    = 0;
+    var totalLessons     = 0;
     var totalDurationSec = 0;
 
     course.curriculum.forEach(function (section) {
@@ -275,13 +290,14 @@
       });
     });
 
-    var totalHours    = Math.floor(totalDurationSec / 3600);
-    var totalMins     = Math.ceil((totalDurationSec % 3600) / 60);
-    var durationText  = (totalHours > 0 ? totalHours + 'h ' : '') + totalMins + 'm total';
+    var totalHours   = Math.floor(totalDurationSec / 3600);
+    var totalMins    = Math.ceil((totalDurationSec % 3600) / 60);
+    var durationText = (totalHours > 0 ? totalHours + 'h ' : '') +
+                       totalMins + 'm total';
 
     var summaryLine = U.el('p', {
       className: 'mb-3',
-      style:     { color: 'var(--text-muted)', fontSize: '0.85rem' },
+      style: { color: 'var(--text-muted)', fontSize: '0.85rem' },
       textContent: course.curriculum.length + ' sections • ' +
                    totalLessons + ' lessons • ' + durationText
     });
@@ -292,17 +308,18 @@
     });
 
     course.curriculum.forEach(function (section, sIdx) {
-      var headerId  = 'curr-head-' + sIdx;
-      var bodyId    = 'curr-body-' + sIdx;
+      var headerId = 'curr-head-' + sIdx;
+      var bodyId   = 'curr-body-' + sIdx;
 
-      var sectionLessons  = section.lessons ? section.lessons.length : 0;
-      var sectionDurSec   = 0;
+      var sectionLessons = section.lessons ? section.lessons.length : 0;
+      var sectionDurSec  = 0;
       if (section.lessons) {
         section.lessons.forEach(function (l) {
           if (!l.duration) return;
           var p = l.duration.split(':');
           sectionDurSec +=
-            (parseInt(p[0], 10) || 0) * 60 + (parseInt(p[1], 10) || 0);
+            (parseInt(p[0], 10) || 0) * 60 +
+            (parseInt(p[1], 10) || 0);
         });
       }
       var sectionDurMin = Math.ceil(sectionDurSec / 60);
@@ -311,7 +328,10 @@
         className: 'accordion-button' + (sIdx === 0 ? '' : ' collapsed'),
         type:      'button',
         dataset:   { bsToggle: 'collapse', bsTarget: '#' + bodyId },
-        aria:      { expanded: sIdx === 0 ? 'true' : 'false', controls: bodyId }
+        aria:      {
+          expanded: sIdx === 0 ? 'true' : 'false',
+          controls: bodyId
+        }
       });
       btn.appendChild(U.el('span', { textContent: section.title }));
       btn.appendChild(U.el('span', {
@@ -319,7 +339,10 @@
         textContent: sectionLessons + ' lessons • ' + sectionDurMin + ' min'
       }));
 
-      var header = U.el('h2', { className: 'accordion-header', id: headerId });
+      var header = U.el('h2', {
+        className: 'accordion-header',
+        id:        headerId
+      });
       header.appendChild(btn);
 
       var lessonList = U.el('ul', { className: 'lesson-list' });
@@ -347,19 +370,23 @@
           lessonList.appendChild(U.el('li', { className: 'lesson-item' }, [
             U.el('i',    { className: iconClass + ' lesson-icon',
                            aria: { hidden: 'true' } }),
-            U.el('span', { className: 'lesson-title', textContent: lesson.title }),
+            U.el('span', { className: 'lesson-title',
+                           textContent: lesson.title }),
             metaEl
           ]));
         });
       }
 
       var bodyContent = U.el('div', {
-        className: 'accordion-collapse collapse' + (sIdx === 0 ? ' show' : ''),
+        className: 'accordion-collapse collapse' +
+                   (sIdx === 0 ? ' show' : ''),
         id:        bodyId,
         aria:      { labelledby: headerId },
         dataset:   { bsParent: '#curriculum-accordion' }
       });
-      bodyContent.appendChild(U.el('div', { className: 'accordion-body' }, [lessonList]));
+      bodyContent.appendChild(
+        U.el('div', { className: 'accordion-body' }, [lessonList])
+      );
 
       var item = U.el('div', { className: 'accordion-item' });
       item.appendChild(header);
@@ -372,7 +399,8 @@
       aria:      { label: 'Course curriculum' }
     }, [
       U.el('h2', { className: 'details-section-title' }, [
-        U.el('i', { className: 'bi bi-journal-text', aria: { hidden: 'true' } }),
+        U.el('i', { className: 'bi bi-journal-text',
+                    aria: { hidden: 'true' } }),
         'Curriculum'
       ]),
       summaryLine,
@@ -402,7 +430,10 @@
         aria:        { expanded: 'false', controls: bodyId }
       });
 
-      var hdr = U.el('h3', { className: 'accordion-header', id: headerId });
+      var hdr = U.el('h3', {
+        className: 'accordion-header',
+        id:        headerId
+      });
       hdr.appendChild(btn);
 
       var body = U.el('div', {
@@ -427,7 +458,8 @@
       aria:      { label: 'Frequently asked questions' }
     }, [
       U.el('h2', { className: 'details-section-title' }, [
-        U.el('i', { className: 'bi bi-question-circle', aria: { hidden: 'true' } }),
+        U.el('i', { className: 'bi bi-question-circle',
+                    aria: { hidden: 'true' } }),
         'Frequently Asked Questions'
       ]),
       accordion
@@ -436,46 +468,150 @@
 
   /* ── Sidebar Card ── */
 
-/**
- * CHANGE in course-details-app.js:
- *
- * Find the function that builds the buy/access button and replace
- * the paid-course branch as follows.
- *
- * Before (Phase 2 — WhatsApp direct):
- *   btn.href = 'https://wa.me/...'
- *
- * After (Phase 4 — Worker gate):
- *   Paid course  → link to /course/paid/{courseId}
- *   Free course  → link to driveUrl directly (unchanged)
- *
- * The exact replacement for buildActionButton() or equivalent:
- */
-
-function buildActionButton(course) {
-  var isFree = !course.price || course.price === 0;
-
-  if (isFree) {
-    // Free: open Drive URL directly — no change
-    var safeUrl = Utils.sanitizeUrl(course.driveUrl || '');
-    return Utils.el('a', {
-      className: 'btn-action btn-free',
-      href: safeUrl || '#',
-      target: '_blank',
-      rel: 'noopener noreferrer',
-      textContent: 'Start Learning Now'
+  /**
+   * Builds the sticky sidebar card with price, action buttons, and meta.
+   *
+   * FREE  course → "Start Learning Now" → opens driveUrl directly
+   * PAID  course → two buttons:
+   *   1. "Buy Now" → WhatsApp link
+   *   2. "Access Course" → /course/paid/:courseId
+   *      Worker checks cookie:
+   *        valid   → 302 redirect to Drive URL (from Worker secret)
+   *        invalid → login page (email + password)
+   *
+   * The Drive URL for paid courses is NEVER in the frontend code.
+   */
+  function buildSidebarCard(course) {
+    var img = U.el('img', {
+      className: 'sidebar-course-img',
+      src:       '../../assets/img/' + course.image,
+      alt:       course.title,
+      loading:   'eager',
+      decoding:  'async'
     });
-  }
 
-  // Paid: go through Worker access gate
-  // Worker checks cookie → valid: redirect to Drive URL (from secret)
-  //                      → invalid: show login page
-  return Utils.el('a', {
-    className: 'btn-action btn-paid',
-    href: '/course/paid/' + course.id,
-    textContent: 'Access Course'
-  });
-}
+    var isFree    = parseFloat(course.price) === 0;
+    var priceText = isFree
+      ? 'Free'
+      : 'EGP ' + parseFloat(course.price).toFixed(2);
+
+    var priceEl = U.el('div', { className: 'price-display' }, [
+      U.el('span', {
+        className:   'price-current' + (isFree ? ' free' : ''),
+        textContent: priceText
+      })
+    ]);
+
+    var buttonsWrapper = U.el('div', { className: 'sidebar-buttons' });
+
+    if (isFree) {
+      // ── Free: open Drive URL directly ──
+      var driveUrl = U.sanitizeUrl(course.driveUrl || '');
+      buttonsWrapper.appendChild(
+        U.el('a', {
+          className: 'btn-buy',
+          href:      driveUrl || '#',
+          target:    driveUrl ? '_blank' : '_self',
+          rel:       'noopener noreferrer',
+          aria: {
+            label: 'Start learning ' + course.title + ' for free'
+          }
+        }, [
+          U.el('i', { className: 'bi bi-play-circle-fill',
+                      aria: { hidden: 'true' } }),
+          ' Start Learning Now'
+        ])
+      );
+
+    } else {
+      // ── Paid: Buy via WhatsApp ──
+      var waLink = U.sanitizeUrl(buildWhatsAppLink(course));
+      buttonsWrapper.appendChild(
+        U.el('a', {
+          className: 'btn-buy',
+          href:      waLink,
+          target:    '_blank',
+          rel:       'noopener noreferrer',
+          aria: {
+            label: 'Buy ' + course.title +
+                   ' for EGP ' + parseFloat(course.price).toFixed(2) +
+                   ' via WhatsApp'
+          }
+        }, [
+          U.el('i', { className: 'bi bi-whatsapp',
+                      aria: { hidden: 'true' } }),
+          ' Buy Now — EGP ' + parseFloat(course.price).toFixed(2)
+        ])
+      );
+
+      // ── Paid: Access Course (already purchased) ──
+      // Navigates to /course/paid/:id
+      // Worker handles the rest — no Drive URL in frontend
+      buttonsWrapper.appendChild(
+        U.el('a', {
+          className: 'btn-enter-course',
+          href:      '/course/paid/' + course.id,
+          aria: {
+            label: 'Access course — sign in to enter'
+          }
+        }, [
+          U.el('i', { className: 'bi bi-box-arrow-in-right',
+                      aria: { hidden: 'true' } }),
+          ' Already Purchased? Enter Course'
+        ])
+      );
+    }
+
+    // ── Meta list ──
+    var metaList = U.el('ul', { className: 'course-meta-list' });
+
+    metaList.appendChild(
+      _buildMetaItem('bi-person-fill',    'Instructor', course.instructor)
+    );
+    metaList.appendChild(
+      _buildMetaItem('bi-tag-fill',       'Category',   course.category)
+    );
+    metaList.appendChild(
+      _buildMetaItem('bi-bar-chart-fill', 'Level',      course.level)
+    );
+    metaList.appendChild(
+      _buildMetaItem('bi-people-fill',    'Students',
+        U.formatNumber(course.students))
+    );
+    metaList.appendChild(
+      _buildMetaItem('bi-book-fill',      'Lessons',    String(course.lessons))
+    );
+
+    // Rating meta item (updated after fetch)
+    var ratingMetaValue = U.el('span', {
+      className: 'meta-value',
+      id:        'meta-rating-value'
+    });
+    var ratingInline = U.el('span', { className: 'meta-rating-inline' });
+    if (RS) ratingInline.appendChild(RS.renderStars(course.rating, false));
+    ratingInline.appendChild(U.el('span', {
+      textContent: ' ' + (course.rating || 0).toFixed(1)
+    }));
+    ratingMetaValue.appendChild(ratingInline);
+
+    metaList.appendChild(U.el('li', { className: 'course-meta-item' }, [
+      U.el('span', { className: 'meta-label' }, [
+        U.el('i', { className: 'bi bi-star-fill',
+                    aria: { hidden: 'true' } }),
+        'Rating'
+      ]),
+      ratingMetaValue
+    ]));
+
+    metaList.appendChild(
+      _buildMetaItem('bi-calendar3', 'Updated', _formatDate(course.date))
+    );
+
+    var content = U.el('div', { className: 'sidebar-content' },
+      [priceEl, buttonsWrapper, metaList]);
+
+    return U.el('div', { className: 'sidebar-card' }, [img, content]);
+  }
 
   function _buildMetaItem(icon, label, value) {
     return U.el('li', { className: 'course-meta-item' }, [
@@ -493,193 +629,6 @@ function buildActionButton(course) {
         year: 'numeric', month: 'long', day: 'numeric'
       });
     } catch (e) { return dateStr; }
-  }
-
-  /* ── Access Modal ── */
-
-  /**
-   * Opens the #accessModal and sets it up for the given course.
-   * The modal HTML is already in the page (course-details/index.html).
-   * @param {object} course
-   */
-  function openAccessModal(course) {
-    var overlay   = document.getElementById('accessModal');
-    var emailInp  = document.getElementById('accessEmailInput');
-    var submitBtn = document.getElementById('accessModalSubmit');
-    var btnText   = document.getElementById('accessModalBtnText');
-    var msgEl     = document.getElementById('accessModalMsg');
-    var waLink    = document.getElementById('accessModalWhatsapp');
-
-    if (!overlay) return;
-
-    // Set WhatsApp link to the course instructor's number
-    if (waLink) {
-      var phone = getWhatsApp(course);
-      waLink.href = U.sanitizeUrl(
-        'https://wa.me/' + phone + '?text=' +
-        encodeURIComponent('Hello, I need help accessing the course "' + course.title + '"')
-      );
-    }
-
-    // Reset state
-    if (emailInp)  { emailInp.value = ''; emailInp.classList.remove('is-invalid'); }
-    if (msgEl)     { msgEl.textContent = ''; msgEl.className = 'access-modal-msg'; }
-    if (btnText)   btnText.textContent = 'Verify & Open Course';
-    if (submitBtn) submitBtn.disabled = false;
-
-    // Show overlay
-    overlay.style.display = 'flex';
-    setTimeout(function () { overlay.classList.add('is-open'); }, 10);
-    if (emailInp) emailInp.focus();
-
-    // ── Close handlers ── //
-
-    var closeBtn = document.getElementById('accessModalClose');
-
-    function closeModal() {
-      overlay.classList.remove('is-open');
-      setTimeout(function () { overlay.style.display = 'none'; }, 250);
-      // Remove listeners to avoid stacking
-      if (closeBtn)  closeBtn.removeEventListener('click', closeModal);
-      overlay.removeEventListener('click', overlayClickHandler);
-      document.removeEventListener('keydown', escHandler);
-      if (submitBtn) submitBtn.removeEventListener('click', handleSubmit);
-    }
-
-    function overlayClickHandler(e) {
-      if (e.target === overlay) closeModal();
-    }
-
-    function escHandler(e) {
-      if (e.key === 'Escape') closeModal();
-    }
-
-    if (closeBtn)  closeBtn.addEventListener('click', closeModal);
-    overlay.addEventListener('click', overlayClickHandler);
-    document.addEventListener('keydown', escHandler);
-
-    // ── Submit handler ── //
-
-    function handleSubmit() {
-      if (!emailInp || !msgEl || !btnText || !submitBtn) return;
-
-      var email = emailInp.value.trim().toLowerCase();
-
-      // Client-side validation
-      if (!email) {
-        showModalMsg(msgEl, 'Please enter your email address.', 'error');
-        emailInp.focus();
-        emailInp.classList.add('is-invalid');
-        return;
-      }
-
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showModalMsg(msgEl, 'Please enter a valid email address.', 'error');
-        emailInp.focus();
-        emailInp.classList.add('is-invalid');
-        return;
-      }
-
-      emailInp.classList.remove('is-invalid');
-
-      // Loading state
-      submitBtn.disabled  = true;
-      btnText.textContent = 'Verifying...';
-      showModalMsg(msgEl, '', '');
-
-      // POST /api/course-access
-      fetch('/api/course-access', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({
-          courseId: course.id,
-          email:    email
-        })
-      })
-        .then(function (res) {
-          return res.json().then(function (data) {
-            return { status: res.status, data: data };
-          });
-        })
-        .then(function (result) {
-          if (result.status === 200 && result.data.access === true) {
-            // Success — open Drive URL
-            showModalMsg(msgEl, 'Access granted! Opening your course...', 'success');
-            btnText.textContent = 'Opening...';
-
-            var driveUrl = U.sanitizeUrl(result.data.driveUrl || '');
-            if (driveUrl) {
-              setTimeout(function () {
-                window.open(driveUrl, '_blank', 'noopener,noreferrer');
-                closeModal();
-              }, 800);
-            } else {
-              showModalMsg(
-                msgEl,
-                'Access granted but course link is not available yet. ' +
-                'Please contact your instructor.',
-                'warning'
-              );
-              submitBtn.disabled  = false;
-              btnText.textContent = 'Verify & Open Course';
-            }
-
-          } else if (result.status === 429) {
-            showModalMsg(
-              msgEl,
-              'Too many attempts. Please wait a moment and try again.',
-              'error'
-            );
-            submitBtn.disabled  = false;
-            btnText.textContent = 'Verify & Open Course';
-
-          } else {
-            // Access denied or error
-            showModalMsg(
-              msgEl,
-              result.data.message ||
-                'Email not found. Please contact your instructor.',
-              'error'
-            );
-            submitBtn.disabled  = false;
-            btnText.textContent = 'Verify & Open Course';
-            emailInp.classList.add('is-invalid');
-          }
-        })
-        .catch(function () {
-          showModalMsg(
-            msgEl,
-            'Connection error. Please check your internet and try again.',
-            'error'
-          );
-          submitBtn.disabled  = false;
-          btnText.textContent = 'Verify & Open Course';
-        });
-    }
-
-    if (submitBtn) submitBtn.addEventListener('click', handleSubmit);
-
-    // Allow Enter key in email input
-    if (emailInp) {
-      emailInp.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          handleSubmit();
-        }
-      });
-    }
-  }
-
-  /**
-   * Shows a message inside the access modal.
-   * @param {HTMLElement} el
-   * @param {string} text
-   * @param {'error'|'success'|'warning'|''} type
-   */
-  function showModalMsg(el, text, type) {
-    if (!el) return;
-    el.textContent = text;
-    el.className   = 'access-modal-msg' + (type ? ' ' + type : '');
   }
 
   /* ── Rating Card ── */
@@ -703,8 +652,12 @@ function buildActionButton(course) {
     });
     card.appendChild(bigNumber);
 
-    var displayStarsContainer = U.el('div', { id: 'rating-display-stars' });
-    if (RS) displayStarsContainer.appendChild(RS.renderStars(0, false));
+    var displayStarsContainer = U.el('div', {
+      id: 'rating-display-stars'
+    });
+    if (RS) {
+      displayStarsContainer.appendChild(RS.renderStars(0, false));
+    }
     card.appendChild(displayStarsContainer);
 
     card.appendChild(U.el('p', {
@@ -713,7 +666,9 @@ function buildActionButton(course) {
       textContent: 'Loading ratings...'
     }));
 
-    var interactiveContainer = U.el('div', { id: 'rating-interactive-stars' });
+    var interactiveContainer = U.el('div', {
+      id: 'rating-interactive-stars'
+    });
     if (RS) {
       var interactiveStars = RS.renderStars(0, true);
       interactiveContainer.appendChild(interactiveStars);
@@ -737,8 +692,10 @@ function buildActionButton(course) {
   }
 
   function _handleRatingSubmit(courseId, value) {
-    var statusEl            = U.qs('#rating-status-msg');
-    var interactiveContainer = U.qs('#rating-interactive-stars .stars-interactive');
+    var statusEl             = U.qs('#rating-status-msg');
+    var interactiveContainer = U.qs(
+      '#rating-interactive-stars .stars-interactive'
+    );
 
     if (statusEl) {
       statusEl.textContent = 'Submitting your rating...';
@@ -758,15 +715,17 @@ function buildActionButton(course) {
         _loadAndDisplayRatings(courseId);
       } else {
         if (statusEl) {
-          statusEl.textContent = result.message || 'Failed to submit. Please try again.';
-          statusEl.className   = 'rating-status error';
+          statusEl.textContent =
+            result.message || 'Failed to submit. Please try again.';
+          statusEl.className = 'rating-status error';
         }
         if (interactiveContainer) {
           interactiveContainer.classList.remove('stars-disabled');
-          interactiveContainer.querySelectorAll('.star-btn').forEach(function (s) {
-            s.disabled = false;
-          });
-          var firstStar = interactiveContainer.querySelector('.star-btn');
+          interactiveContainer
+            .querySelectorAll('.star-btn')
+            .forEach(function (s) { s.disabled = false; });
+          var firstStar =
+            interactiveContainer.querySelector('.star-btn');
           if (firstStar) firstStar.setAttribute('tabindex', '0');
         }
       }
