@@ -19,7 +19,14 @@ var RatingSystem = (function () {
   var U = window.Utils;
   if (!U) {
     console.error('RatingSystem: Utils not found.');
-    return Object.freeze({});
+    // Return a stub object to prevent crashes in consumers
+    return Object.freeze({
+      fetchRatings: function() { return Promise.resolve({ average: 0, count: 0, error: true }); },
+      submitRating: function() { return Promise.resolve({ status: 'error', message: 'Utils missing' }); },
+      renderStars:  function() { return document.createElement('div'); },
+      initializeStarEvents: function() {},
+      disableStars: function() {}
+    });
   }
 
   /* ── Configuration ── */
