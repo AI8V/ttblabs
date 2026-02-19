@@ -15,37 +15,12 @@
   var U    = window.Utils;
   var DATA = window.COURSE_DATA;
 
-  // ── Dependency Check & Error UI ──
   if (!U || !DATA) {
-    var msg = 'Dependencies missing (Utils or COURSE_DATA).';
-    console.error('course-details-app: ' + msg);
-
-    // If dependencies are missing, the page would be blank.
-    // We show a visible error to help the developer/user.
-    var app = document.getElementById('app') || document.body;
-    app.innerHTML = [
-      '<div style="padding: 60px 20px; text-align: center; font-family: sans-serif; color: #f0fdf4; background: #0a0f0d; min-height: 100vh;">',
-        '<h1 style="color: #34d399; font-size: 2rem; margin-bottom: 1rem;">System Error</h1>',
-        '<p style="font-size: 1.1rem; margin-bottom: 2rem;">' + msg + '</p>',
-        '<div style="background: #111916; border: 1px solid rgba(52, 211, 153, 0.1); border-radius: 12px; padding: 20px; max-width: 600px; margin: 0 auto; text-align: left;">',
-          '<p style="font-weight: bold; color: #34d399; margin-top: 0;">Troubleshooting Tips:</p>',
-          '<ul style="color: #86efac; font-size: 0.9rem; line-height: 1.6;">',
-            '<li>Ensure all files in <code>/assets/js/</code> were uploaded correctly.</li>',
-            '<li>If you are using a subdirectory, ensure the URL ends with a trailing slash (e.g., <code>/course-details/</code>).</li>',
-            '<li>Check the browser console for 404 errors on script files.</li>',
-          '</ul>',
-          '<p style="font-size: 0.8rem; color: #4a5c54; margin-bottom: 0;">Current Path: ' + window.location.pathname + '</p>',
-        '</div>',
-        '<a href="../index.html" style="display: inline-block; margin-top: 30px; color: #34d399; text-decoration: none; border: 1px solid #34d399; padding: 12px 24px; border-radius: 8px; font-weight: 600;">Back to Courses</a>',
-      '</div>'
-    ].join('');
+    console.error('course-details-app: Utils or COURSE_DATA missing.');
     return;
   }
 
-  // ── Rating System Robustness ──
-  var RS = (window.RatingSystem && typeof window.RatingSystem.renderStars === 'function')
-    ? window.RatingSystem
-    : null;
+  var RS = window.RatingSystem || null;
 
   /* ── Constants ── */
 
@@ -211,7 +186,7 @@
                      textContent: 'Course Not Found' }),
         U.el('p',  { className: 'error-text',
                      textContent: 'The course you are looking for does not exist.' }),
-        U.el('a',  { className: 'error-btn', href: '/course/index.html' }, [
+        U.el('a',  { className: 'error-btn', href: '../index.html' }, [
           U.el('i', { className: 'bi bi-arrow-left',
                       aria: { hidden: 'true' } }),
           'Browse Courses'
@@ -227,13 +202,13 @@
 
     var li1 = U.el('li', { className: 'breadcrumb-item' });
     li1.appendChild(U.el('a', {
-      href: '/index.html', textContent: 'Home'
+      href: '../../index.html', textContent: 'Home'
     }));
     ol.appendChild(li1);
 
     var li2 = U.el('li', { className: 'breadcrumb-item' });
     li2.appendChild(U.el('a', {
-      href: '/course/index.html', textContent: 'Courses'
+      href: '../index.html', textContent: 'Courses'
     }));
     ol.appendChild(li2);
 
@@ -255,7 +230,7 @@
   function buildHeader(course) {
     return U.el('header', { className: 'details-header' }, [
       U.el('div', { className: 'page-container' }, [
-        U.el('a', { className: 'back-link', href: '/course/index.html' }, [
+        U.el('a', { className: 'back-link', href: '../index.html' }, [
           U.el('i', { className: 'bi bi-arrow-left',
                       aria: { hidden: 'true' } }),
           'Back to Courses'
@@ -509,7 +484,7 @@
   function buildSidebarCard(course) {
     var img = U.el('img', {
       className: 'sidebar-course-img',
-      src:       '/assets/img/' + course.image,
+      src:       '../../assets/img/' + course.image,
       alt:       course.title,
       loading:   'eager',
       decoding:  'async'
@@ -758,7 +733,7 @@
   }
 
   function _loadAndDisplayRatings(courseId) {
-    if (!RS || typeof RS.fetchRatings !== 'function') return;
+    if (!RS) return;
     RS.fetchRatings(courseId).then(function (data) {
       var avg   = data.average || 0;
       var count = data.count   || 0;
