@@ -211,7 +211,7 @@
                      textContent: 'Course Not Found' }),
         U.el('p',  { className: 'error-text',
                      textContent: 'The course you are looking for does not exist.' }),
-        U.el('a',  { className: 'error-btn', href: '../index.html' }, [
+        U.el('a',  { className: 'error-btn', href: '/course/index.html' }, [
           U.el('i', { className: 'bi bi-arrow-left',
                       aria: { hidden: 'true' } }),
           'Browse Courses'
@@ -227,13 +227,13 @@
 
     var li1 = U.el('li', { className: 'breadcrumb-item' });
     li1.appendChild(U.el('a', {
-      href: '../../index.html', textContent: 'Home'
+      href: '/index.html', textContent: 'Home'
     }));
     ol.appendChild(li1);
 
     var li2 = U.el('li', { className: 'breadcrumb-item' });
     li2.appendChild(U.el('a', {
-      href: '../index.html', textContent: 'Courses'
+      href: '/course/index.html', textContent: 'Courses'
     }));
     ol.appendChild(li2);
 
@@ -255,7 +255,7 @@
   function buildHeader(course) {
     return U.el('header', { className: 'details-header' }, [
       U.el('div', { className: 'page-container' }, [
-        U.el('a', { className: 'back-link', href: '../index.html' }, [
+        U.el('a', { className: 'back-link', href: '/course/index.html' }, [
           U.el('i', { className: 'bi bi-arrow-left',
                       aria: { hidden: 'true' } }),
           'Back to Courses'
@@ -509,7 +509,7 @@
   function buildSidebarCard(course) {
     var img = U.el('img', {
       className: 'sidebar-course-img',
-      src:       '../../assets/img/' + course.image,
+      src:       '/assets/img/' + course.image,
       alt:       course.title,
       loading:   'eager',
       decoding:  'async'

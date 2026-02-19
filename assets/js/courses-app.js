@@ -98,7 +98,7 @@
     // صورة placeholder واحدة
     var img = U.el('img', {
       className: 'card-img-top course-card-img',
-      src: '../assets/img/' + course.image,
+      src: '/assets/img/' + course.image,
       alt: course.title,
       loading: idx < 3 ? 'eager' : 'lazy',
       decoding: 'async'
