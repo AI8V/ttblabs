@@ -813,6 +813,93 @@
     _loadAndDisplayRatings(course.id);
   }
 
+  function injectSEO(course) {
+  var brand   = COURSE_DATA.BRAND_NAME;
+  var domain  = COURSE_DATA.DOMAIN;
+  var meta    = COURSE_DATA.META;
+  var base    = 'https://' + domain;
+  var pageUrl = base + '/course/course-details/?id=' + course.id;
+
+  var pageTitle = course.title + ' — ' + brand;
+  var pageDesc  = course.description + ' ' + meta.descriptionShort;
+  var pageImage = base + '/assets/img/' + course.image;
+
+  document.title = pageTitle;
+
+  // meta description
+  var descEl = document.getElementById('page-desc');
+  if (descEl) descEl.setAttribute('content', pageDesc);
+
+  // canonical
+  var canonEl = document.getElementById('page-canonical');
+  if (canonEl) canonEl.setAttribute('href', pageUrl);
+
+  // OG
+  var ogMap = {
+    'og-url':       pageUrl,
+    'og-title':     pageTitle,
+    'og-desc':      pageDesc,
+    'og-image':     pageImage,
+    'og-site-name': brand
+  };
+  Object.keys(ogMap).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.setAttribute('content', ogMap[id]);
+  });
+
+  // Twitter
+  ['tw-title','tw-desc','tw-image'].forEach(function(id) {
+    var val = id === 'tw-title' ? pageTitle
+            : id === 'tw-desc'  ? pageDesc
+            : pageImage;
+    var el = document.getElementById(id);
+    if (el) el.setAttribute('content', val);
+  });
+
+  // hreflang
+  var hreflang = document.getElementById('hreflang-en');
+  if (hreflang) hreflang.setAttribute('href', pageUrl);
+
+  // JSON-LD — Course schema
+  var schema = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    'name': course.title,
+    'description': course.description,
+    'url': pageUrl,
+    'provider': {
+      '@type': 'Organization',
+      'name': brand,
+      'url': base
+    },
+    'educationalLevel': course.level,
+    'inLanguage': 'en',
+    'offers': {
+      '@type': 'Offer',
+      'price': course.price,
+      'priceCurrency': 'USD',
+      'availability': 'https://schema.org/InStock'
+    },
+    'aggregateRating': course.rating > 0 ? {
+      '@type': 'AggregateRating',
+      'ratingValue': course.rating,
+      'bestRating': 5,
+      'worstRating': 1,
+      'ratingCount': course.students
+    } : undefined
+  };
+
+  // remove undefined keys
+  Object.keys(schema).forEach(function(k) {
+    if (schema[k] === undefined) delete schema[k];
+  });
+
+  var script = document.createElement('script');
+  script.type        = 'application/ld+json';
+  script.textContent = JSON.stringify(schema, null, 2);
+  document.head.appendChild(script);
+}
+
   /* ── Init ── */
 
   function init() {

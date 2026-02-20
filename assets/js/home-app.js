@@ -11,6 +11,7 @@
   /* ─────────────────────────────────────────
      CONSTANTS
   ───────────────────────────────────────── */
+
   var FEATURED_COUNT = 3;
 
   var STATS = [
@@ -20,7 +21,6 @@
     { icon: 'bi-award-fill',            number: '100%',  label: 'Satisfaction Rate' }
   ];
 
-  /* Map category name → Bootstrap Icon class */
   var CATEGORY_ICONS = {
     'Business':    'bi-briefcase-fill',
     'Health':      'bi-heart-pulse-fill',
@@ -35,13 +35,6 @@
      HELPERS
   ───────────────────────────────────────── */
 
-  /**
-   * Create element with optional class names and text.
-   * @param {string} tag
-   * @param {string|string[]} [classes]
-   * @param {string} [text]
-   * @returns {HTMLElement}
-   */
   function el(tag, classes, text) {
     var node = document.createElement(tag);
     if (classes) {
@@ -52,123 +45,177 @@
     return node;
   }
 
-  /**
-   * Safely build a wa.me WhatsApp URL.
-   * @param {string} phone
-   * @param {string} [message]
-   * @returns {string}
-   */
   function buildWhatsAppUrl(phone, message) {
     var base = 'https://wa.me/' + encodeURIComponent(phone);
     if (message) base += '?text=' + encodeURIComponent(message);
     return base;
   }
 
-  /**
-   * Build catalog URL with optional category filter.
-   * @param {string} [category]
-   * @returns {string}
-   */
   function buildCatalogUrl(category) {
     if (!category) return './course/';
     return './course/?category=' + encodeURIComponent(category);
   }
 
-  /**
-   * Build course-details URL from course id.
-   * @param {number} id
-   * @returns {string}
-   */
   function buildCourseUrl(id) {
     return './course/course-details/?id=' + encodeURIComponent(id);
   }
 
-  /**
-   * Format price to display string.
-   * @param {number} price
-   * @returns {string}
-   */
   function formatPrice(price) {
     if (price === 0) return 'Free';
     return '$' + price.toFixed(2);
   }
 
-  /**
-   * Get 3 latest courses sorted by date desc.
-   * @returns {Array}
-   */
   function getFeaturedCourses() {
-    var sorted = COURSE_DATA.courses.slice().sort(function (a, b) {
+    return COURSE_DATA.courses.slice().sort(function (a, b) {
       return new Date(b.date) - new Date(a.date);
-    });
-    return sorted.slice(0, FEATURED_COUNT);
+    }).slice(0, FEATURED_COUNT);
   }
 
-  /**
-   * Build categories map: { name → count }
-   * @returns {Object}
-   */
   function getCategoriesWithCount() {
     var map = {};
-    COURSE_DATA.courses.forEach(function (course) {
-      var cat = course.category;
-      map[cat] = (map[cat] || 0) + 1;
+    COURSE_DATA.courses.forEach(function (c) {
+      map[c.category] = (map[c.category] || 0) + 1;
     });
     return map;
   }
 
-  /**
-   * Render star icons for a given rating (supports .5).
-   * Returns a document fragment.
-   * @param {number} rating  0–5
-   * @returns {DocumentFragment}
-   */
   function buildStarFragment(rating) {
     var frag = document.createDocumentFragment();
     for (var i = 1; i <= 5; i++) {
-      var star = el('i');
+      var star = document.createElement('i');
       star.setAttribute('aria-hidden', 'true');
-      if (rating >= i) {
-        star.className = 'bi bi-star-fill';
-      } else if (rating >= i - 0.5) {
-        star.className = 'bi bi-star-half';
-      } else {
-        star.className = 'bi bi-star';
-      }
+      star.className = rating >= i
+        ? 'bi bi-star-fill'
+        : rating >= i - 0.5 ? 'bi bi-star-half' : 'bi bi-star';
       frag.appendChild(star);
     }
     return frag;
   }
 
   /* ─────────────────────────────────────────
+     SEO INJECTION — from COURSE_DATA
+  ───────────────────────────────────────── */
+
+  function injectSEO() {
+    var brand  = COURSE_DATA.BRAND_NAME;
+    var domain = COURSE_DATA.DOMAIN;
+    var meta   = COURSE_DATA.META;
+    var base   = 'https://' + domain;
+
+    var pageTitle = brand + ' — ' + meta.tagline;
+    var pageDesc  = meta.description;
+    var pageUrl   = base + '/';
+    var pageImage = base + meta.ogImage;
+
+    /* <title> */
+    document.title = pageTitle;
+
+    /* meta description */
+    var descEl = document.getElementById('page-desc');
+    if (descEl) descEl.setAttribute('content', pageDesc);
+
+    /* canonical */
+    var canonEl = document.getElementById('page-canonical');
+    if (canonEl) canonEl.setAttribute('href', pageUrl);
+
+    /* Open Graph */
+    var ogMap = {
+      'og-url':       pageUrl,
+      'og-title':     pageTitle,
+      'og-desc':      pageDesc,
+      'og-image':     pageImage,
+      'og-site-name': brand
+    };
+    Object.keys(ogMap).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.setAttribute('content', ogMap[id]);
+    });
+
+    /* Twitter Card */
+    var twMap = {
+      'tw-title': pageTitle,
+      'tw-desc':  pageDesc,
+      'tw-image': pageImage
+    };
+    Object.keys(twMap).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.setAttribute('content', twMap[id]);
+    });
+
+    /* hreflang */
+    var hreflang = document.querySelector('link[rel="alternate"][hreflang="en"]');
+    if (hreflang) hreflang.setAttribute('href', pageUrl);
+
+    /* JSON-LD — WebSite + Organization */
+    var schema = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebSite',
+          '@id': base + '/#website',
+          'name': brand,
+          'url': base,
+          'description': meta.description,
+          'potentialAction': {
+            '@type': 'SearchAction',
+            'target': {
+              '@type': 'EntryPoint',
+              'urlTemplate': base + '/course/?search={search_term_string}'
+            },
+            'query-input': 'required name=search_term_string'
+          }
+        },
+        {
+          '@type': 'Organization',
+          '@id': base + '/#organization',
+          'name': brand,
+          'url': base,
+          'logo': base + '/assets/img/fav180.png',
+          'foundingDate': meta.foundingYear,
+          'contactPoint': {
+            '@type': 'ContactPoint',
+            'contactType': 'customer support',
+            'availableLanguage': 'English'
+          }
+        }
+      ]
+    };
+
+    var script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(schema, null, 2);
+    document.head.appendChild(script);
+  }
+
+  /* ─────────────────────────────────────────
      BUILDERS
   ───────────────────────────────────────── */
 
-  /** Populate hero text nodes */
   function buildHero() {
-    var line1 = document.getElementById('hero-title-line1');
+    var line1    = document.getElementById('hero-title-line1');
     var gradient = document.getElementById('hero-title-gradient');
     var subtitle = document.getElementById('hero-subtitle');
     var navBrand = document.getElementById('nav-brand-name');
 
-    if (navBrand) navBrand.textContent = COURSE_DATA.BRAND_NAME;
-
-    if (line1)    line1.textContent    = 'Expand Your Skills,';
-    if (gradient) gradient.textContent = 'Shape Your Future.';
-    if (subtitle) subtitle.textContent =
+    if (navBrand)  navBrand.textContent  = COURSE_DATA.BRAND_NAME;
+    if (line1)     line1.textContent     = 'Expand Your Skills,';
+    if (gradient)  gradient.textContent  = 'Shape Your Future.';
+    if (subtitle)  subtitle.textContent  =
       'Expert-led courses in Development, Design, Health, Marketing and more. ' +
       'Learn at your own pace with lifetime access and dedicated support.';
   }
 
-  /** Build stats bar */
   function buildStats() {
     var container = document.getElementById('stats-bar');
     if (!container) return;
+    var frag = document.createDocumentFragment();
 
     STATS.forEach(function (stat) {
       var item = el('div', 'stat-item');
+      item.setAttribute('role', 'listitem');
 
-      var icon = el('i', ['stat-icon', stat.icon]);
+      var icon = document.createElement('i');
+      icon.className = 'bi ' + stat.icon + ' stat-icon';
       icon.setAttribute('aria-hidden', 'true');
 
       var number = el('div', 'stat-number', stat.number);
@@ -177,207 +224,173 @@
       item.appendChild(icon);
       item.appendChild(number);
       item.appendChild(label);
-      container.appendChild(item);
+      frag.appendChild(item);
     });
+
+    container.appendChild(frag);
   }
 
-  /** Build a single featured course card */
   function buildFeaturedCard(course) {
-    /* wrapper col */
-    var col = el('div', ['col-12', 'col-md-6', 'col-lg-4']);
-
-    /* card */
+    var col  = el('div', ['col-12', 'col-md-6', 'col-lg-4']);
     var card = el('div', 'featured-card');
 
     /* image */
     var img = document.createElement('img');
-    img.className = 'featured-card-img';
-    img.alt = course.title;
-    img.loading = 'lazy';
-    img.src = './assets/img/' + course.image;
+    img.className     = 'featured-card-img';
+    img.alt           = course.title;
+    img.loading       = 'lazy';
+    img.decoding      = 'async';
+    img.width         = 400;
+    img.height        = 225;
+    img.src           = './assets/img/' + course.image;
     card.appendChild(img);
 
     /* body */
     var body = el('div', 'featured-card-body');
+    body.appendChild(el('div', 'featured-card-category', course.category));
 
-    /* category */
-    var cat = el('div', 'featured-card-category', course.category);
-    body.appendChild(cat);
-
-    /* title */
     var title = el('h3', 'featured-card-title', course.title);
     body.appendChild(title);
 
-    /* description */
-    var desc = el('p', 'featured-card-desc', course.description);
-    body.appendChild(desc);
+    body.appendChild(el('p', 'featured-card-desc', course.description));
 
-    /* meta row */
+    /* meta */
     var meta = el('div', 'featured-card-meta');
 
-    /* stars */
     var starsWrap = el('div', 'featured-stars');
-    starsWrap.setAttribute('aria-label', 'Rating: ' + course.rating + ' out of 5');
+    starsWrap.setAttribute('role', 'img');
+    starsWrap.setAttribute('aria-label',
+      'Rating: ' + course.rating + ' out of 5');
     starsWrap.appendChild(buildStarFragment(course.rating));
     meta.appendChild(starsWrap);
 
-    /* lessons */
     var lessonsItem = el('span', 'featured-meta-item');
-    var lessonsIcon = el('i', ['bi', 'bi-play-circle']);
+    var lessonsIcon = document.createElement('i');
+    lessonsIcon.className = 'bi bi-play-circle';
     lessonsIcon.setAttribute('aria-hidden', 'true');
-    var lessonsText = document.createTextNode(' ' + course.lessons + ' lessons');
     lessonsItem.appendChild(lessonsIcon);
-    lessonsItem.appendChild(lessonsText);
+    lessonsItem.appendChild(
+      document.createTextNode(' ' + course.lessons + ' lessons'));
     meta.appendChild(lessonsItem);
 
-    /* level */
     var levelItem = el('span', 'featured-meta-item');
-    var levelIcon = el('i', ['bi', 'bi-bar-chart-fill']);
+    var levelIcon = document.createElement('i');
+    levelIcon.className = 'bi bi-bar-chart-fill';
     levelIcon.setAttribute('aria-hidden', 'true');
-    var levelText = document.createTextNode(' ' + course.level);
     levelItem.appendChild(levelIcon);
-    levelItem.appendChild(levelText);
+    levelItem.appendChild(document.createTextNode(' ' + course.level));
     meta.appendChild(levelItem);
 
     body.appendChild(meta);
 
-    /* footer: price + button */
-    var footer = el('div', 'featured-card-footer');
-
+    /* footer */
+    var footer  = el('div', 'featured-card-footer');
     var priceEl = el('span');
     priceEl.className = 'featured-card-price' +
       (course.price === 0 ? ' featured-card-price--free' : '');
     priceEl.textContent = formatPrice(course.price);
     footer.appendChild(priceEl);
 
-    var btn = document.createElement('a');
-    btn.className = 'featured-card-btn';
-    btn.href = buildCourseUrl(course.id);
+    var btn     = document.createElement('a');
+    btn.className   = 'featured-card-btn';
+    btn.href        = buildCourseUrl(course.id);
     btn.textContent = 'View Course';
+    btn.setAttribute('aria-label', 'View course: ' + course.title);
     footer.appendChild(btn);
 
     body.appendChild(footer);
     card.appendChild(body);
     col.appendChild(card);
-
     return col;
   }
 
-  /** Build featured courses grid */
   function buildFeaturedCourses() {
     var grid = document.getElementById('featured-courses-grid');
     if (!grid) return;
-
-    var courses = getFeaturedCourses();
     var frag = document.createDocumentFragment();
-    courses.forEach(function (course) {
-      frag.appendChild(buildFeaturedCard(course));
+    getFeaturedCourses().forEach(function (c) {
+      frag.appendChild(buildFeaturedCard(c));
     });
     grid.appendChild(frag);
   }
 
-  /** Build a single category card */
   function buildCategoryCard(name, count, colorKey) {
-    var colClass = 'col-6 col-sm-4 col-md-3 col-lg-2';
-    var colClasses = colClass.split(' ');
-    var col = el('div', colClasses);
-
+    var col    = el('div', ['col-6', 'col-sm-4', 'col-md-3', 'col-lg-2']);
     var anchor = document.createElement('a');
     anchor.className = 'category-card category-card--' + colorKey;
-    anchor.href = buildCatalogUrl(name);
-    anchor.setAttribute('aria-label', name + ' — ' + count + ' courses');
+    anchor.href      = buildCatalogUrl(name);
+    anchor.setAttribute('aria-label',
+      name + ' — ' + count + (count === 1 ? ' course' : ' courses'));
 
-    /* icon */
     var iconWrap = el('div', ['category-icon', 'category-icon--' + colorKey]);
-    var iconEl = el('i', ['bi', CATEGORY_ICONS[name] || 'bi-bookmark-fill']);
+    var iconEl   = document.createElement('i');
+    iconEl.className = 'bi ' + (CATEGORY_ICONS[name] || 'bi-bookmark-fill');
     iconEl.setAttribute('aria-hidden', 'true');
     iconWrap.appendChild(iconEl);
     anchor.appendChild(iconWrap);
 
-    /* name */
-    var nameEl = el('span', 'category-name', name);
-    anchor.appendChild(nameEl);
-
-    /* count */
-    var countEl = el('span', 'category-count',
-      count === 1 ? '1 course' : count + ' courses');
-    anchor.appendChild(countEl);
+    anchor.appendChild(el('span', 'category-name', name));
+    anchor.appendChild(el('span', 'category-count',
+      count === 1 ? '1 course' : count + ' courses'));
 
     col.appendChild(anchor);
     return col;
   }
 
-  /** Build categories grid */
   function buildCategories() {
     var grid = document.getElementById('categories-grid');
     if (!grid) return;
-
     var catMap = getCategoriesWithCount();
-    var frag = document.createDocumentFragment();
-
+    var frag   = document.createDocumentFragment();
     Object.keys(catMap).forEach(function (name) {
-      var count    = catMap[name];
-      var catInfo  = COURSE_DATA.categories[name];
-      var colorKey = catInfo ? catInfo.color : 'emerald';
-      frag.appendChild(buildCategoryCard(name, count, colorKey));
+      var colorKey = (COURSE_DATA.categories[name] || {}).color || 'emerald';
+      frag.appendChild(buildCategoryCard(name, catMap[name], colorKey));
     });
-
     grid.appendChild(frag);
   }
 
-  /** Build footer categories list */
   function buildFooterCategories() {
     var list = document.getElementById('footer-categories');
     if (!list) return;
-
     var catMap = getCategoriesWithCount();
     var frag   = document.createDocumentFragment();
-
     Object.keys(catMap).forEach(function (name) {
-      var li = el('li');
+      var li = document.createElement('li');
       var a  = document.createElement('a');
-      a.href = buildCatalogUrl(name);
+      a.href        = buildCatalogUrl(name);
       a.textContent = name;
       li.appendChild(a);
       frag.appendChild(li);
     });
-
     list.appendChild(frag);
   }
 
-  /** Set WhatsApp links */
   function buildWhatsAppLinks() {
-    var phone   = COURSE_DATA.WHATSAPP_NUMBER;
-    var message = 'Hello! I have a question about your courses.';
-    var url     = buildWhatsAppUrl(phone, message);
-
+    var url = buildWhatsAppUrl(
+      COURSE_DATA.WHATSAPP_NUMBER,
+      'Hello! I have a question about your courses.'
+    );
     var ctaBtn    = document.getElementById('cta-whatsapp-btn');
     var footerBtn = document.getElementById('footer-whatsapp-link');
-
-    if (ctaBtn) {
-      ctaBtn.href = url;
-    }
-    if (footerBtn) {
-      footerBtn.href = url;
-    }
+    if (ctaBtn)    ctaBtn.href    = url;
+    if (footerBtn) footerBtn.href = url;
   }
 
-  /** Build footer brand + copyright */
   function buildFooter() {
     var brandEl = document.getElementById('footer-brand-name');
     var copyrEl = document.getElementById('footer-copyright');
-
     if (brandEl) brandEl.textContent = COURSE_DATA.BRAND_NAME;
-    if (copyrEl) {
-      copyrEl.textContent =
-        '© ' + new Date().getFullYear() + ' ' + COURSE_DATA.BRAND_NAME + '. All rights reserved.';
-    }
+    if (copyrEl) copyrEl.textContent =
+      '© ' + new Date().getFullYear() + ' ' +
+      COURSE_DATA.BRAND_NAME + '. All rights reserved.';
   }
 
   /* ─────────────────────────────────────────
      INIT
   ───────────────────────────────────────── */
+
   function init() {
+    injectSEO();
     buildHero();
     buildStats();
     buildFeaturedCourses();

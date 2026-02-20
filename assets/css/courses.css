@@ -40,12 +40,79 @@
   --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
+/* ── Bridge Variables (unified system for all pages) ── */
+
+/* Maps new naming convention to existing values */
+
+/* + adds missing tokens required by home/about/legal */
+
+:root {
+  --bg-primary: var(--bg-deep);
+  --bg-secondary: #0e1512;
+  --bg-elevated: var(--bg-surface);
+  --border-color: var(--border-subtle);
+  --em-300: #6ee7b7;
+  --em-400: var(--emerald-400);
+  --em-500: var(--emerald-500);
+  --em-600: var(--emerald-600);
+  --em-700: var(--emerald-700);
+  --em-800: rgba(4, 120, 87, 0.35);
+  --em-900: rgba(4, 120, 87, 0.15);
+  --teal-700: #0f766e;
+  --teal-800: rgba(15, 118, 110, 0.35);
+  --cyan-600: #0891b2;
+  --cyan-800: rgba(8, 145, 178, 0.3);
+  --font-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --transition-fast: var(--speed-fast);
+  --transition-base: var(--speed-normal);
+  --z-skip: 9999;
+}
+
+/* ── Font Face — Inter Variable (self-hosted) ── */
+
+/* ── Skip Link ── */
+
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: var(--z-skip);
+  padding: 0.6rem 1.2rem;
+  background: var(--emerald-500);
+  color: var(--bg-deep);
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transform: translateY(-150%);
+  transition: transform var(--speed-fast) var(--ease-smooth);
+  box-shadow: var(--glow-lg);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* ── Focus Visible — Global ── */
+
+:focus-visible {
+  outline: 2px solid var(--emerald-400);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* suppress default focus ring only when focus-visible is supported */
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 /* ── Base ── */
 
 body {
   background: var(--bg-deep);
   color: var(--text-primary);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-base);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
@@ -438,6 +505,7 @@ body {
   line-height: 1.35;
   margin: 0;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -454,6 +522,7 @@ body {
   line-height: 1.5;
   margin: 0;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;

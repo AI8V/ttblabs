@@ -246,18 +246,41 @@ var COURSE_DATA = (function () {
     "Developer":    { color: "emerald" }
   };
 
-  var WHATSAPP_NUMBER = "1556450850";
+  var WHATSAPP_NUMBER = "201556450850";
   var BRAND_NAME      = "Ai8V | Mind & Machine";
   var DOMAIN          = "ttblabs.com";
 
-  return deepFreeze({
-    courses: courses,
-    categories: categories,
-    WHATSAPP_NUMBER: WHATSAPP_NUMBER,
-    BRAND_NAME: BRAND_NAME,
-    DOMAIN: DOMAIN
-  });
+return deepFreeze({
+  courses:         courses,
+  categories:      categories,
+  WHATSAPP_NUMBER: WHATSAPP_NUMBER,
+  BRAND_NAME:      BRAND_NAME,
+  DOMAIN:          DOMAIN,
 
+  /* ── SEO / White-Label Meta ── */
+  META: {
+    /* Short tagline — used in titles and OG */
+    tagline: 'Learn. Build. Grow.',
+
+    /* Platform description — used in meta description + JSON-LD */
+    description: 'Expert-led online courses in Development, Design, Health, ' +
+                 'Marketing, Photography and more. Learn at your own pace ' +
+                 'with lifetime access and dedicated support.',
+
+    /* Short description for catalog/legal pages */
+    descriptionShort: 'Expert-led online courses with lifetime access ' +
+                      'and personal support.',
+
+    /* OG image — absolute path from root */
+    ogImage: '/assets/img/og-image.png',
+
+    /* Contact */
+    supportEmail: 'support@ttblabs.com',
+
+    /* Year platform was founded — for JSON-LD */
+    foundingYear: '2026'
+  }
+});
 })();
 
 if (typeof window !== 'undefined') window.COURSE_DATA = COURSE_DATA;

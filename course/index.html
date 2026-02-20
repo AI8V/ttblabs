@@ -3,12 +3,35 @@
 
 <head>
     <meta charset="utf-8">
+<!-- SEO — injected at runtime by courses-app.js from COURSE_DATA -->
+  <title id="page-title">Online Courses — Development, Design, Health &amp; More</title>
+  <meta name="description"
+        id="page-desc"
+        content="Explore our catalog of expert-led online courses in Development, Design, Health, Marketing and more. Filter by category, level or rating and start learning today.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" id="page-canonical" href="https://ttblabs.com/course/">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         id="og-url"       content="https://ttblabs.com/course/">
+  <meta property="og:title"       id="og-title"     content="Online Courses — Development, Design, Health &amp; More">
+  <meta property="og:description" id="og-desc"      content="Explore expert-led online courses. Filter by category, level or rating and start learning today.">
+  <meta property="og:image"       id="og-image"     content="https://ttblabs.com/assets/img/og-image.png">
+  <meta property="og:site_name"   id="og-site-name" content="TTB Labs">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       id="tw-title" content="Online Courses — Development, Design, Health &amp; More">
+  <meta name="twitter:description" id="tw-desc"  content="Explore expert-led online courses. Filter by category, level or rating and start learning today.">
+  <meta name="twitter:image"       id="tw-image" content="https://ttblabs.com/assets/img/og-image.png">
+
+  <!-- hreflang -->
+  <link rel="alternate" hreflang="en" href="https://ttblabs.com/course/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Online Courses in Web Development, Health &amp;amp; More | Your Brand Name</title>
+    <title>Courses</title>
     <link rel="canonical" href="https://ttblabs.com/course/">
     <meta property="og:url" content="https://ttblabs.com/course/">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none';            script-src 'self' 'unsafe-inline';            style-src 'self' https://cdnjs.cloudflare.com;            font-src https://cdnjs.cloudflare.com;            img-src 'self' data:;            connect-src 'self';            form-action 'none';">
-    <meta name="description" content="Explore our extensive catalog of online courses. Find top-rated courses in business, health, design, and technology. Start learning today!">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none';                  script-src 'self' 'unsafe-inline';                  style-src 'self' https://cdnjs.cloudflare.com;                  font-src 'self' https://cdnjs.cloudflare.com;                  img-src 'self' data:;                  connect-src 'self';                  form-action 'none';">
     <script>
         (function() {
 
@@ -99,79 +122,208 @@
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../assets/css/courses.css">
+<!-- Critical CSS — Navbar area + page header + layout skeleton -->
+  <style>
+    :root{
+      --bg-deep:#0a0f0d;--bg-card:#111916;--bg-surface:#151d19;
+      --bg-primary:#0a0f0d;--bg-elevated:#151d19;--bg-hover:#1a241f;
+      --bg-input:#0d1310;
+      --emerald-400:#34d399;--emerald-500:#10b981;--emerald-600:#059669;
+      --emerald-700:#047857;--teal-400:#2dd4bf;--teal-600:#0d9488;
+      --cyan-400:#22d3ee;
+      --text-primary:#f0fdf4;--text-secondary:#86efac;
+      --text-muted:#6b7f75;--text-dim:#4a5c54;
+      --em-400:#34d399;--em-500:#10b981;
+      --border-subtle:rgba(52,211,153,0.1);
+      --border-glow:rgba(52,211,153,0.25);
+      --border-color:rgba(52,211,153,0.1);
+      --speed-fast:0.15s;--speed-normal:0.3s;
+      --ease-smooth:cubic-bezier(0.4,0,0.2,1);
+      --font-base:'Inter',system-ui,-apple-system,sans-serif;
+      --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      background:#0a0f0d;color:#f0fdf4;
+      font-family:'Inter',system-ui,-apple-system,sans-serif;
+      line-height:1.6;-webkit-font-smoothing:antialiased;
+      overflow-x:hidden;margin:0;min-height:100vh;
+    }
+    /* skip link */
+    .skip-link{
+      position:fixed;top:1rem;left:1rem;z-index:9999;
+      padding:.6rem 1.2rem;background:#10b981;color:#0a0f0d;
+      font-weight:700;font-size:.9rem;border-radius:12px;
+      text-decoration:none;transform:translateY(-150%);
+      transition:transform .15s;
+    }
+    .skip-link:focus-visible{transform:translateY(0)}
+    /* page header */
+    .page-container{
+      max-width:1400px;margin:0 auto;padding:2rem 1.5rem;
+    }
+    .page-header{text-align:center;padding:2rem 0 2.5rem}
+    .page-title{
+      font-size:clamp(2rem,5vw,3.2rem);font-weight:800;
+      background:linear-gradient(135deg,#34d399,#2dd4bf,#22d3ee);
+      -webkit-background-clip:text;background-clip:text;
+      -webkit-text-fill-color:transparent;
+      margin-bottom:.5rem;letter-spacing:-.02em;
+    }
+    /* sidebar skeleton */
+    .sidebar{
+      background:#151d19;border:1px solid rgba(52,211,153,.1);
+      border-radius:16px;padding:1.5rem;
+    }
+    /* toolbar skeleton */
+    .toolbar{
+      display:flex;flex-wrap:wrap;align-items:center;
+      justify-content:space-between;gap:1rem;
+      padding-bottom:1.5rem;margin-bottom:1rem;
+      border-bottom:1px solid rgba(52,211,153,.1);
+    }
+    .search-input{
+      background:#151d19;border:1px solid rgba(52,211,153,.1);
+      border-radius:12px;color:#f0fdf4;
+      padding:.65rem 1rem;font-size:.9rem;min-width:200px;
+    }
+    .search-input:focus{
+      outline:none;border-color:#10b981;
+      box-shadow:0 0 0 3px rgba(16,185,129,.15);
+    }
+    /* floating fab */
+    .floating-fab{
+      position:fixed;bottom:20px;left:20px;z-index:1045;
+      width:52px;height:52px;border-radius:50%;
+      background:linear-gradient(135deg,#059669,#0d9488);
+      border:none;color:#f0fdf4;font-size:1.2rem;
+    }
+  </style>
 </head>
 
-<body>  <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
+<body>  <!-- Skip to content -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <main id="main-content" class="page-container">
 
-    <!-- Header -->
+    <!-- ── Page Header ── -->
     <header class="page-header">
       <h1 class="page-title">Explore Courses</h1>
       <nav class="breadcrumb-nav" aria-label="Breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page"><span>Courses</span></li>
+          <li class="breadcrumb-item">
+            <a href="../index.html">Home</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <span>Courses</span>
+          </li>
         </ol>
       </nav>
     </header>
 
-    <!-- Layout -->
+    <!-- ── Layout ── -->
     <div class="row g-4">
 
-      <!-- Sidebar -->
-      <aside id="desktop-filters-slot" class="col-lg-3 d-none d-lg-block sidebar" aria-label="Filters"></aside>
+      <!-- Sidebar — desktop -->
+      <aside id="desktop-filters-slot"
+             class="col-lg-3 d-none d-lg-block sidebar"
+             aria-label="Course filters">
+      </aside>
 
-      <!-- Content -->
+      <!-- Content area -->
       <div id="content-area" class="col-lg-9">
 
         <!-- Toolbar -->
-        <div class="toolbar">
-          <p id="results-text" class="results-text mb-0" aria-live="polite">Loading…</p>
+        <div class="toolbar" role="search">
+          <p id="results-text"
+             class="results-text mb-0"
+             aria-live="polite"
+             aria-atomic="true">Loading</p>
+
           <div class="d-flex align-items-center gap-2">
-            <label class="visually-hidden" for="search-input">Search courses</label>
-            <input id="search-input" class="search-input" type="search" placeholder="Search courses…">
+            <label class="visually-hidden" for="search-input">
+              Search courses
+            </label>
+            <input id="search-input"
+                   class="search-input"
+                   type="search"
+                   placeholder="Search courses"
+                   autocomplete="off"
+                   aria-label="Search courses">
+
             <div class="dropdown">
-              <button id="sort-dropdown" class="btn sort-toggle dropdown-toggle" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
+              <button id="sort-dropdown"
+                      class="btn sort-toggle dropdown-toggle"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      aria-label="Sort courses">
                 <span class="d-none d-sm-inline sort-label">Average Ratings</span>
                 <i class="d-sm-none bi bi-sort-down" aria-hidden="true"></i>
               </button>
-              <ul id="sort-dropdown-menu" class="dropdown-menu sort-menu dropdown-menu-end"></ul>
+              <ul id="sort-dropdown-menu"
+                  class="dropdown-menu sort-menu dropdown-menu-end"
+                  role="listbox"
+                  aria-label="Sort options">
+              </ul>
             </div>
           </div>
         </div>
 
-        <!-- Grid -->
-        <div id="courses-grid" class="row g-4"></div>
+        <!-- Courses grid -->
+        <div id="courses-grid"
+             class="row g-4"
+             aria-live="polite"
+             aria-atomic="true">
+        </div>
 
         <!-- Pagination -->
         <nav aria-label="Course pages">
-          <ul id="pagination-bar" class="pagination justify-content-center mt-4 gap-2"></ul>
+          <ul id="pagination-bar"
+              class="pagination justify-content-center mt-4 gap-2">
+          </ul>
         </nav>
+
       </div>
     </div>
-  </main>
 
-  <!-- Mobile Offcanvas -->
-  <div id="offcanvas-filters" class="offcanvas offcanvas-start mobile-offcanvas" tabindex="-1"
-    aria-labelledby="offcanvas-title">
+  </main><!-- /#main-content -->
+
+
+  <!-- ── Mobile Offcanvas filters ── -->
+  <div id="offcanvas-filters"
+       class="offcanvas offcanvas-start mobile-offcanvas"
+       tabindex="-1"
+       aria-labelledby="offcanvas-title">
     <div class="offcanvas-header">
       <h2 id="offcanvas-title" class="offcanvas-title">Filters</h2>
-      <button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <button class="btn-close"
+              type="button"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close filters"></button>
     </div>
     <div id="mobile-filters-slot" class="offcanvas-body"></div>
   </div>
 
-  <!-- FAB -->
-  <button id="floating-filter-btn" class="d-lg-none floating-fab" type="button" data-bs-toggle="offcanvas"
-    data-bs-target="#offcanvas-filters" aria-label="Open filters">
+
+  <!-- ── FAB — mobile filter trigger ── -->
+  <button id="floating-filter-btn"
+          class="d-lg-none floating-fab"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvas-filters"
+          aria-label="Open course filters"
+          aria-controls="offcanvas-filters">
     <i class="bi bi-funnel-fill" aria-hidden="true"></i>
   </button>
 
-  <!-- Toast Container -->
-  <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
 
+  <!-- ── Toast Container ── -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3"
+       aria-live="polite"
+       aria-atomic="true">
+  </div>
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../assets/js/utils.js"></script>
     <script src="../assets/js/courses-data.js"></script>

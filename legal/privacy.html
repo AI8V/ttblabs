@@ -3,12 +3,35 @@
 
 <head>
     <meta charset="utf-8">
+<!-- SEO — injected at runtime by legal-app.js from COURSE_DATA -->
+  <title id="page-title">Privacy Policy — Online Learning Platform</title>
+  <meta name="description"
+        id="page-desc"
+        content="Privacy Policy — how we collect, use and protect your personal information on our online learning platform.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" id="page-canonical" href="https://ttblabs.com/legal/privacy.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         id="og-url"       content="https://ttblabs.com/legal/privacy.html">
+  <meta property="og:title"       id="og-title"     content="Privacy Policy — Online Learning Platform">
+  <meta property="og:description" id="og-desc"      content="Privacy Policy — how we collect, use and protect your personal information.">
+  <meta property="og:image"       id="og-image"     content="https://ttblabs.com/assets/img/og-image.png">
+  <meta property="og:site_name"   id="og-site-name" content="TTB Labs">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       id="tw-title" content="Privacy Policy — Online Learning Platform">
+  <meta name="twitter:description" id="tw-desc"  content="Privacy Policy — how we collect, use and protect your personal information.">
+  <meta name="twitter:image"       id="tw-image" content="https://ttblabs.com/assets/img/og-image.png">
+
+  <!-- hreflang -->
+  <link rel="alternate" hreflang="en" href="https://ttblabs.com/legal/privacy.html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Privacy Policy — TTB Labs</title>
+    <title>Courses</title>
     <link rel="canonical" href="https://ttblabs.com/legal/privacy.html">
     <meta property="og:url" content="https://ttblabs.com/legal/privacy.html">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none';            script-src 'self' 'unsafe-inline';            style-src 'self' https://cdnjs.cloudflare.com;            font-src https://cdnjs.cloudflare.com;            img-src 'self' data:;            connect-src 'self';            form-action 'none';">
-    <meta name="description" content="Privacy Policy for TTB Labs — how we collect, use and protect your personal information.">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none';                  script-src 'self' 'unsafe-inline';                  style-src 'self' https://cdnjs.cloudflare.com;                  font-src 'self' https://cdnjs.cloudflare.com;                  img-src 'self' data:;                  connect-src 'self';                  form-action 'none';">
     <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../assets/img/fav180.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/fav16.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/fav16D.png" media="(prefers-color-scheme: dark)">
@@ -19,9 +42,102 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../assets/css/courses.css">
     <link rel="stylesheet" href="../assets/css/legal.css">
+<!-- Critical CSS — Navbar + Page Header above-the-fold -->
+  <style>
+    :root{
+      --bg-deep:#0a0f0d;--bg-card:#111916;--bg-surface:#151d19;
+      --bg-primary:#0a0f0d;--bg-elevated:#151d19;
+      --emerald-400:#34d399;--emerald-500:#10b981;--emerald-600:#059669;
+      --emerald-700:#047857;--teal-600:#0d9488;
+      --text-primary:#f0fdf4;--text-secondary:#86efac;--text-muted:#6b7f75;
+      --em-400:#34d399;--em-500:#10b981;--em-600:#059669;--em-700:#047857;
+      --border-color:rgba(52,211,153,0.1);
+      --transition-fast:0.15s;--transition-base:0.3s;
+      --font-base:'Inter',system-ui,-apple-system,sans-serif;
+      --radius-md:12px;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      background:#0a0f0d;color:#f0fdf4;
+      font-family:'Inter',system-ui,-apple-system,sans-serif;
+      line-height:1.6;-webkit-font-smoothing:antialiased;
+      overflow-x:hidden;margin:0;
+    }
+    .skip-link{
+      position:fixed;top:1rem;left:1rem;z-index:9999;
+      padding:.6rem 1.2rem;background:#10b981;color:#0a0f0d;
+      font-weight:700;font-size:.9rem;border-radius:12px;
+      text-decoration:none;transform:translateY(-150%);
+      transition:transform .15s;
+    }
+    .skip-link:focus-visible{transform:translateY(0)}
+    .legal-navbar{
+      background-color:rgba(10,15,13,.92);
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(52,211,153,.1);padding:.75rem 0;
+    }
+    .legal-brand{
+      display:flex;align-items:center;gap:.5rem;
+      text-decoration:none;font-weight:700;font-size:1.1rem;
+      color:#f0fdf4!important;
+    }
+    .legal-brand-icon{
+      display:flex;align-items:center;justify-content:center;
+      width:2rem;height:2rem;
+      background:linear-gradient(135deg,#059669,#0d9488);
+      border-radius:6px;color:#fff;font-size:1rem;
+    }
+    .legal-navbar .nav-link{
+      color:#86efac!important;font-size:.9rem;font-weight:500;
+      padding:.4rem .75rem!important;border-radius:6px;
+    }
+    .legal-btn-outline{
+      color:#34d399!important;border:1px solid #047857!important;
+      background:transparent!important;font-weight:600;border-radius:8px;
+    }
+    .legal-page-header{
+      position:relative;background-color:#0a0f0d;
+      padding:3.5rem 0 3rem;
+      border-bottom:1px solid rgba(52,211,153,.1);overflow:hidden;
+    }
+    .legal-header-glow{
+      position:absolute;top:-30%;right:-5%;width:500px;height:500px;
+      background:radial-gradient(ellipse,rgba(16,185,129,.07) 0%,transparent 65%);
+      pointer-events:none;
+    }
+    .legal-header-content{position:relative;z-index:1}
+    .legal-breadcrumb{
+      display:flex;align-items:center;gap:.4rem;
+      list-style:none;padding:0;margin:0;font-size:.82rem;
+    }
+    .legal-breadcrumb li{display:flex;align-items:center;color:#6b7f75}
+    .legal-breadcrumb a{color:#6b7f75;text-decoration:none}
+    .legal-breadcrumb li[aria-current="page"]{color:#34d399;font-weight:600}
+    .legal-header-badge{
+      display:inline-flex;align-items:center;
+      background:rgba(16,185,129,.08);
+      border:1px solid rgba(16,185,129,.2);
+      color:#34d399;font-size:.78rem;font-weight:600;
+      letter-spacing:.06em;text-transform:uppercase;
+      padding:.35rem 1rem;border-radius:20px;
+    }
+    .legal-header-title{
+      font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;
+      color:#f0fdf4;letter-spacing:-.02em;margin:.5rem 0 .75rem;
+    }
+    .legal-header-meta{
+      font-size:.85rem;color:#6b7f75;
+      display:flex;align-items:center;gap:.5rem;
+      flex-wrap:wrap;margin:0;
+    }
+  </style>
 </head>
 
-<body>  <!-- ═══════════════════════════════════════════
+<body>  <!-- Skip to content -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ═══════════════════════════════════════════
        NAVBAR
   ═══════════════════════════════════════════ -->
   <nav class="navbar navbar-expand-lg legal-navbar sticky-top"
@@ -29,7 +145,7 @@
     <div class="container">
 
       <a class="navbar-brand legal-brand" href="../index.html">
-        <span class="legal-brand-icon">
+        <span class="legal-brand-icon" aria-hidden="true">
           <i class="bi bi-cpu-fill" aria-hidden="true"></i>
         </span>
         <span class="legal-brand-text" id="nav-brand-name"></span>
@@ -39,23 +155,27 @@
               data-bs-toggle="collapse" data-bs-target="#mainNav"
               aria-controls="mainNav" aria-expanded="false"
               aria-label="Toggle navigation">
-        <i class="bi bi-list fs-4" style="color:var(--em-500);"
-           aria-hidden="true"></i>
+        <i class="bi bi-list fs-4"
+           style="color:var(--em-500);" aria-hidden="true"></i>
       </button>
 
       <div class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
           <li class="nav-item">
-            <a class="nav-link" href="../index.html">Home</a>
+            <a class="nav-link" href="../index.html"
+               data-nav-page="home">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../course/">Courses</a>
+            <a class="nav-link" href="../course/"
+               data-nav-page="courses">Courses</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../about.html">About</a>
+            <a class="nav-link" href="../about.html"
+               data-nav-page="about">About</a>
           </li>
           <li class="nav-item ms-lg-2">
-            <a class="btn legal-btn-outline btn-sm px-3" href="../course/">
+            <a class="btn legal-btn-outline btn-sm px-3" href="../course/"
+               aria-label="Browse all courses">
               <i class="bi bi-grid-fill me-1" aria-hidden="true"></i>Browse All
             </a>
           </li>
@@ -69,11 +189,10 @@
   <!-- ═══════════════════════════════════════════
        PAGE HEADER
   ═══════════════════════════════════════════ -->
-  <header class="legal-page-header" aria-label="Page header">
+  <header class="legal-page-header">
     <div class="legal-header-glow" aria-hidden="true"></div>
     <div class="container legal-header-content">
 
-      <!-- Breadcrumb -->
       <nav aria-label="Breadcrumb" class="mb-3">
         <ol class="legal-breadcrumb">
           <li>
@@ -89,15 +208,15 @@
       </nav>
 
       <div class="legal-header-badge mb-3" aria-hidden="true">
-        <i class="bi bi-shield-lock me-2"></i>Legal
+        <i class="bi bi-shield-lock me-2" aria-hidden="true"></i>Legal
       </div>
       <h1 class="legal-header-title">Privacy Policy</h1>
       <p class="legal-header-meta">
         <i class="bi bi-calendar3 me-1" aria-hidden="true"></i>
-        Last updated: <time datetime="2026-02-19">February 19, 2026</time>
+        Last updated:
+        <time datetime="2026-02-19">February 19, 2026</time>
         <span class="legal-meta-sep" aria-hidden="true">·</span>
-        Applies to:
-        <span id="legal-domain-inline"></span>
+        Applies to: <span id="legal-domain-inline"></span>
       </p>
 
     </div>
@@ -111,7 +230,7 @@
     <div class="container legal-layout">
       <div class="row g-5 justify-content-center">
 
-        <!-- ── TABLE OF CONTENTS (sticky sidebar) ── -->
+        <!-- ── TOC sidebar — desktop only ── -->
         <div class="col-12 col-lg-3 d-none d-lg-block">
           <nav class="legal-toc" aria-label="Table of contents">
             <p class="legal-toc-title">Contents</p>
@@ -132,11 +251,11 @@
           </nav>
         </div>
 
-        <!-- ── DOCUMENT BODY ── -->
+        <!-- ── Document body ── -->
         <div class="col-12 col-lg-9">
-          <article class="legal-article" aria-label="Privacy Policy document">
+          <article class="legal-article">
 
-            <!-- INTRO NOTE -->
+            <!-- Intro note -->
             <div class="legal-intro-note">
               <i class="bi bi-info-circle-fill legal-intro-note-icon"
                  aria-hidden="true"></i>
@@ -250,8 +369,7 @@
                   <li>
                     <strong>Course access provisioning:</strong> Your email
                     address is used to create a unique set of login credentials
-                    that grant you access to the specific course(s) you
-                    purchased.
+                    that grant you access to the specific course(s) you purchased.
                   </li>
                   <li>
                     <strong>Purchase support:</strong> We may reference your
@@ -273,8 +391,7 @@
               </div>
               <p>
                 We do not use your data for targeted advertising, email
-                marketing campaigns, or any automated decision-making
-                processes.
+                marketing campaigns, or any automated decision-making processes.
               </p>
             </section>
 
@@ -329,7 +446,8 @@
               </p>
 
               <div class="legal-table-wrap">
-                <table class="legal-table" aria-label="Cookie details">
+                <table class="legal-table">
+                  <caption class="visually-hidden">Cookie details</caption>
                   <thead>
                     <tr>
                       <th scope="col">Cookie Name</th>
@@ -340,9 +458,7 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td>
-                        <code class="legal-code">__paid_{courseId}</code>
-                      </td>
+                      <td><code class="legal-code">__paid_{courseId}</code></td>
                       <td>
                         Grants access to a specific purchased course.
                         Contains a cryptographically signed token with
@@ -355,9 +471,7 @@
                 </table>
               </div>
 
-              <p>
-                This cookie is:
-              </p>
+              <p>This cookie is:</p>
               <div class="legal-list-block">
                 <ul class="legal-ul">
                   <li>
@@ -408,8 +522,8 @@
               </p>
 
               <div class="legal-table-wrap">
-                <table class="legal-table"
-                       aria-label="Third-party services used">
+                <table class="legal-table">
+                  <caption class="visually-hidden">Third-party services used</caption>
                   <thead>
                     <tr>
                       <th scope="col">Service</th>
@@ -488,27 +602,25 @@
                 <ul class="legal-ul">
                   <li>
                     <strong>Course access credentials (email + password):</strong>
-                    Retained for the lifetime of your course access.
-                    If you request deletion of your access or a full refund,
-                    your credentials are removed from our records within
-                    7 business days.
+                    Retained for the lifetime of your course access. If you
+                    request deletion of your access or a full refund, your
+                    credentials are removed from our records within 7 business days.
                   </li>
                   <li>
                     <strong>Rating data (IP + rating value):</strong>
-                    Retained indefinitely as part of the course rating
-                    history. If you request removal of your rating,
-                    we will delete the associated record upon verification.
+                    Retained indefinitely as part of the course rating history.
+                    If you request removal of your rating, we will delete the
+                    associated record upon verification.
                   </li>
                   <li>
-                    <strong>Access cookie:</strong>
-                    Expires automatically after 30 days. You may delete
-                    it at any time through your browser settings.
+                    <strong>Access cookie:</strong> Expires automatically after
+                    30 days. You may delete it at any time through your browser
+                    settings.
                   </li>
                   <li>
-                    <strong>WhatsApp messages:</strong>
-                    Governed by WhatsApp's own retention policies.
-                    We do not export or archive your WhatsApp messages
-                    to any external system.
+                    <strong>WhatsApp messages:</strong> Governed by WhatsApp's
+                    own retention policies. We do not export or archive your
+                    WhatsApp messages to any external system.
                   </li>
                 </ul>
               </div>
@@ -524,8 +636,7 @@
               </h2>
               <p>
                 We implement appropriate technical measures to protect
-                your data against unauthorised access, alteration, or
-                disclosure:
+                your data against unauthorised access, alteration, or disclosure:
               </p>
               <div class="legal-list-block">
                 <ul class="legal-ul">
@@ -534,9 +645,8 @@
                     <strong>HTTPS</strong> — enforced by Cloudflare.
                   </li>
                   <li>
-                    Course access cookies are cryptographically signed
-                    using <strong>HMAC-SHA256</strong>, preventing
-                    tampering or forgery.
+                    Course access cookies are cryptographically signed using
+                    <strong>HMAC-SHA256</strong>, preventing tampering or forgery.
                   </li>
                   <li>
                     Course content URLs are never exposed to the browser —
@@ -552,18 +662,18 @@
                     Cloudflare Worker layer.
                   </li>
                   <li>
-                    All dynamic content on the platform is built using
-                    the DOM API — no user data is ever injected as raw HTML,
+                    All dynamic content on the platform is built using the
+                    DOM API — no user data is ever injected as raw HTML,
                     eliminating a class of XSS vulnerabilities.
                   </li>
                 </ul>
               </div>
               <p>
-                While we take all reasonable precautions, no system is
-                completely immune to security risks. In the event of a
-                data breach that affects your personal information, we
-                will notify you via the email address associated with
-                your course access as promptly as reasonably possible.
+                While we take all reasonable precautions, no system is completely
+                immune to security risks. In the event of a data breach that
+                affects your personal information, we will notify you via the
+                email address associated with your course access as promptly
+                as reasonably possible.
               </p>
             </section>
 
@@ -582,34 +692,33 @@
               <div class="legal-list-block">
                 <ul class="legal-ul">
                   <li>
-                    <strong>Right to access:</strong> You may request a
-                    copy of the personal data we hold about you.
+                    <strong>Right to access:</strong> You may request a copy
+                    of the personal data we hold about you.
                   </li>
                   <li>
-                    <strong>Right to rectification:</strong> You may
-                    request that we correct inaccurate data (e.g., a
-                    misspelled email address).
+                    <strong>Right to rectification:</strong> You may request
+                    that we correct inaccurate data (e.g., a misspelled email
+                    address).
                   </li>
                   <li>
-                    <strong>Right to erasure:</strong> You may request
-                    deletion of your personal data. Note that deleting
-                    your access credentials will revoke your course access.
+                    <strong>Right to erasure:</strong> You may request deletion
+                    of your personal data. Note that deleting your access
+                    credentials will revoke your course access.
                   </li>
                   <li>
-                    <strong>Right to restrict processing:</strong> You
-                    may request that we limit how we use your data while
-                    a request or dispute is being resolved.
+                    <strong>Right to restrict processing:</strong> You may
+                    request that we limit how we use your data while a request
+                    or dispute is being resolved.
                   </li>
                   <li>
-                    <strong>Right to data portability:</strong> You may
-                    request your data in a structured, machine-readable
-                    format.
+                    <strong>Right to data portability:</strong> You may request
+                    your data in a structured, machine-readable format.
                   </li>
                 </ul>
               </div>
               <p>
-                To exercise any of these rights, please contact us using
-                the details in
+                To exercise any of these rights, please contact us using the
+                details in
                 <a href="#section-contact">Section 12 — Contact Us</a>.
                 We will respond within 30 days.
               </p>
@@ -624,12 +733,11 @@
                 Children's Privacy
               </h2>
               <p>
-                Our platform is not directed at children under the age
-                of 13. We do not knowingly collect personal information
-                from children under 13. If you believe a child under 13
-                has provided us with personal information, please contact
-                us immediately and we will take steps to remove that
-                information from our records.
+                Our platform is not directed at children under the age of 13.
+                We do not knowingly collect personal information from children
+                under 13. If you believe a child under 13 has provided us with
+                personal information, please contact us immediately and we will
+                take steps to remove that information from our records.
               </p>
             </section>
 
@@ -642,17 +750,17 @@
                 Changes to This Policy
               </h2>
               <p>
-                We may update this Privacy Policy from time to time to
-                reflect changes in our practices, technology, or legal
-                requirements. When we make changes, we will update the
-                "Last updated" date at the top of this page.
+                We may update this Privacy Policy from time to time to reflect
+                changes in our practices, technology, or legal requirements.
+                When we make changes, we will update the "Last updated" date
+                at the top of this page.
               </p>
               <p>
-                We encourage you to review this policy periodically.
-                Continued use of the platform after a policy update
-                constitutes your acceptance of the revised terms.
-                For significant changes, we will make reasonable efforts
-                to notify active users via WhatsApp or email.
+                We encourage you to review this policy periodically. Continued
+                use of the platform after a policy update constitutes your
+                acceptance of the revised terms. For significant changes, we
+                will make reasonable efforts to notify active users via
+                WhatsApp or email.
               </p>
             </section>
 
@@ -674,21 +782,18 @@
               <div class="legal-contact-block">
                 <div class="legal-contact-row">
                   <i class="bi bi-building" aria-hidden="true"></i>
-                  <span>
-                    <strong id="brand-inline-2"></strong>
-                  </span>
+                  <span><strong id="brand-inline-2"></strong></span>
                 </div>
                 <div class="legal-contact-row">
                   <i class="bi bi-globe" aria-hidden="true"></i>
-                  <span>
-                    <a id="domain-link" href="#"></a>
-                  </span>
+                  <span><a id="domain-link" href="#"></a></span>
                 </div>
                 <div class="legal-contact-row">
                   <i class="bi bi-envelope-fill" aria-hidden="true"></i>
                   <span>
-                    <a href="mailto:support@ttblabs.com">
-                      support@ttblabs.com
+                    <a id="contact-email-link"
+                       href="mailto:support@ttblabs.com">
+                      <span id="contact-email-text">support@ttblabs.com</span>
                     </a>
                   </span>
                 </div>
@@ -698,7 +803,8 @@
                     <a id="contact-whatsapp-link"
                        href="#"
                        target="_blank"
-                       rel="noopener noreferrer">
+                       rel="noopener noreferrer"
+                       aria-label="Chat with us on WhatsApp">
                       Chat on WhatsApp
                     </a>
                   </span>
@@ -709,7 +815,6 @@
 
           </article>
         </div>
-        <!-- end document body col -->
 
       </div>
     </div>
@@ -724,7 +829,6 @@
 
       <div class="row g-4 legal-footer-top">
 
-        <!-- Brand -->
         <div class="col-12 col-md-4">
           <div class="legal-footer-brand mb-3">
             <i class="bi bi-cpu-fill me-2"
@@ -739,12 +843,12 @@
              href="#"
              target="_blank"
              rel="noopener noreferrer"
-             class="legal-footer-social-link">
+             class="legal-footer-social-link"
+             aria-label="Contact us on WhatsApp">
             <i class="bi bi-whatsapp me-1" aria-hidden="true"></i>WhatsApp
           </a>
         </div>
 
-        <!-- Platform -->
         <div class="col-6 col-md-2 offset-md-1">
           <h4 class="legal-footer-col-title">Platform</h4>
           <ul class="legal-footer-links">
@@ -754,7 +858,6 @@
           </ul>
         </div>
 
-        <!-- Legal -->
         <div class="col-6 col-md-2">
           <h4 class="legal-footer-col-title">Legal</h4>
           <ul class="legal-footer-links">
@@ -767,7 +870,6 @@
           </ul>
         </div>
 
-        <!-- Contact -->
         <div class="col-6 col-md-2">
           <h4 class="legal-footer-col-title">Contact</h4>
           <ul class="legal-footer-links">
@@ -775,10 +877,12 @@
               <a id="footer-wa-link-2"
                  href="#"
                  target="_blank"
-                 rel="noopener noreferrer">WhatsApp</a>
+                 rel="noopener noreferrer"
+                 aria-label="Contact us on WhatsApp">WhatsApp</a>
             </li>
             <li>
-              <a href="mailto:support@ttblabs.com">Email Us</a>
+              <a id="footer-email-link"
+                 href="mailto:support@ttblabs.com">Email Us</a>
             </li>
           </ul>
         </div>

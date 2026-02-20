@@ -3,12 +3,35 @@
 
 <head>
     <meta charset="utf-8">
+<!-- SEO — injected at runtime by about-app.js from COURSE_DATA -->
+  <title id="page-title">About Us — Online Learning Platform</title>
+  <meta name="description"
+        id="page-desc"
+        content="Learn about our online learning platform — our mission, how we work, and how to get in touch.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" id="page-canonical" href="https://ttblabs.com/about.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         id="og-url"       content="https://ttblabs.com/about.html">
+  <meta property="og:title"       id="og-title"     content="About Us — Online Learning Platform">
+  <meta property="og:description" id="og-desc"      content="Learn about our online learning platform — our mission, how we work, and how to get in touch.">
+  <meta property="og:image"       id="og-image"     content="https://ttblabs.com/assets/img/og-image.png">
+  <meta property="og:site_name"   id="og-site-name" content="TTB Labs">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       id="tw-title" content="About Us — Online Learning Platform">
+  <meta name="twitter:description" id="tw-desc"  content="Learn about our online learning platform — our mission, how we work, and how to get in touch.">
+  <meta name="twitter:image"       id="tw-image" content="https://ttblabs.com/assets/img/og-image.png">
+
+  <!-- hreflang -->
+  <link rel="alternate" hreflang="en" href="https://ttblabs.com/about.html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>About Us — TTB Labs</title>
+    <title>Courses</title>
     <link rel="canonical" href="https://ttblabs.com/about.html">
     <meta property="og:url" content="https://ttblabs.com/about.html">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none';            script-src 'self' 'unsafe-inline';            style-src 'self' https://cdnjs.cloudflare.com;            font-src https://cdnjs.cloudflare.com;            img-src 'self' data:;            connect-src 'self';            form-action 'none';">
-    <meta name="description" content="Learn about TTB Labs — our mission, how we work, and how to get in touch with us.">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none';                  script-src 'self' 'unsafe-inline';                  style-src 'self' https://cdnjs.cloudflare.com;                  font-src 'self' https://cdnjs.cloudflare.com;                  img-src 'self' data:;                  connect-src 'self';                  form-action 'none';">
     <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="assets/img/fav180.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/img/fav16.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/img/fav16D.png" media="(prefers-color-scheme: dark)">
@@ -19,16 +42,115 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="assets/css/courses.css">
     <link rel="stylesheet" href="assets/css/about.css">
+<style>
+    :root{
+      --bg-deep:#0a0f0d;--bg-card:#111916;--bg-surface:#151d19;
+      --bg-primary:#0a0f0d;--bg-elevated:#151d19;
+      --emerald-400:#34d399;--emerald-500:#10b981;--emerald-600:#059669;
+      --emerald-700:#047857;--teal-400:#2dd4bf;--teal-600:#0d9488;
+      --cyan-400:#22d3ee;--text-primary:#f0fdf4;--text-secondary:#86efac;
+      --text-muted:#6b7f75;
+      --em-400:#34d399;--em-500:#10b981;--em-600:#059669;--em-700:#047857;
+      --border-color:rgba(52,211,153,0.1);
+      --speed-fast:0.15s;--speed-normal:0.3s;
+      --transition-fast:0.15s;--transition-base:0.3s;
+      --font-base:'Inter',system-ui,-apple-system,sans-serif;
+      --radius-md:12px;--radius-lg:16px;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      background:#0a0f0d;color:#f0fdf4;
+      font-family:'Inter',system-ui,-apple-system,sans-serif;
+      line-height:1.6;-webkit-font-smoothing:antialiased;
+      overflow-x:hidden;margin:0;
+    }
+    /* skip link */
+    .skip-link{
+      position:fixed;top:1rem;left:1rem;z-index:9999;
+      padding:.6rem 1.2rem;background:#10b981;color:#0a0f0d;
+      font-weight:700;font-size:.9rem;border-radius:12px;
+      text-decoration:none;transform:translateY(-150%);
+      transition:transform .15s;
+    }
+    .skip-link:focus-visible{transform:translateY(0)}
+    /* navbar */
+    .about-navbar{
+      background-color:rgba(10,15,13,.92);
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(52,211,153,.1);padding:.75rem 0;
+    }
+    .about-brand{
+      display:flex;align-items:center;gap:.5rem;
+      text-decoration:none;font-weight:700;font-size:1.1rem;
+      color:#f0fdf4!important;
+    }
+    .about-brand-icon{
+      display:flex;align-items:center;justify-content:center;
+      width:2rem;height:2rem;
+      background:linear-gradient(135deg,#059669,#0d9488);
+      border-radius:6px;color:#fff;font-size:1rem;
+    }
+    .about-navbar .nav-link{
+      color:#86efac!important;font-size:.9rem;font-weight:500;
+      padding:.4rem .75rem!important;border-radius:6px;
+    }
+    .about-btn-outline{
+      color:#34d399!important;border:1px solid #047857!important;
+      background:transparent!important;font-weight:600;border-radius:8px;
+    }
+    /* page header */
+    .about-page-header{
+      position:relative;background-color:#0a0f0d;
+      padding:3.5rem 0 3rem;
+      border-bottom:1px solid rgba(52,211,153,.1);overflow:hidden;
+    }
+    .about-header-glow{
+      position:absolute;top:-30%;right:-10%;width:500px;height:500px;
+      background:radial-gradient(ellipse,rgba(16,185,129,.08) 0%,transparent 65%);
+      pointer-events:none;
+    }
+    .about-header-content{position:relative;z-index:1}
+    .about-breadcrumb{
+      display:flex;align-items:center;gap:.4rem;
+      list-style:none;padding:0;margin:0;font-size:.82rem;
+    }
+    .about-breadcrumb li{display:flex;align-items:center;color:#6b7f75}
+    .about-breadcrumb a{color:#6b7f75;text-decoration:none}
+    .about-breadcrumb li[aria-current="page"]{color:#34d399;font-weight:600}
+    .about-header-badge{
+      display:inline-flex;align-items:center;
+      background:rgba(16,185,129,.08);
+      border:1px solid rgba(16,185,129,.2);
+      color:#34d399;font-size:.78rem;font-weight:600;
+      letter-spacing:.06em;text-transform:uppercase;
+      padding:.35rem 1rem;border-radius:20px;
+    }
+    .about-header-title{
+      font-size:clamp(2rem,5vw,3rem);font-weight:800;
+      color:#f0fdf4;letter-spacing:-.02em;margin-bottom:.75rem;
+    }
+    .about-header-subtitle{
+      font-size:1rem;color:#6b7f75;
+      max-width:500px;line-height:1.65;margin:0;
+    }
+  </style>
 </head>
 
-<body>  <!-- ═══════════════════════════════════════════
+<body>  <!-- Skip to content -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ═══════════════════════════════════════════
        NAVBAR
   ═══════════════════════════════════════════ -->
-  <nav class="navbar navbar-expand-lg about-navbar sticky-top" aria-label="Main navigation">
+  <nav class="navbar navbar-expand-lg about-navbar sticky-top"
+       aria-label="Main navigation">
     <div class="container">
 
       <a class="navbar-brand about-brand" href="./index.html">
-        <span class="about-brand-icon"><i class="bi bi-cpu-fill" aria-hidden="true"></i></span>
+        <span class="about-brand-icon" aria-hidden="true">
+          <i class="bi bi-cpu-fill" aria-hidden="true"></i>
+        </span>
         <span class="about-brand-text" id="nav-brand-name"></span>
       </a>
 
@@ -36,23 +158,27 @@
               data-bs-toggle="collapse" data-bs-target="#mainNav"
               aria-controls="mainNav" aria-expanded="false"
               aria-label="Toggle navigation">
-        <i class="bi bi-list fs-4" style="color: var(--em-500);" aria-hidden="true"></i>
+        <i class="bi bi-list fs-4"
+           style="color:var(--em-500);" aria-hidden="true"></i>
       </button>
 
       <div class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
           <li class="nav-item">
-            <a class="nav-link" href="./index.html">Home</a>
+            <a class="nav-link" href="./index.html"
+               data-nav-page="home">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./course/">Courses</a>
+            <a class="nav-link" href="./course/"
+               data-nav-page="courses">Courses</a>
           </li>
           <li class="nav-item">
             <a class="nav-link about-nav-active" href="./about.html"
-               aria-current="page">About</a>
+               aria-current="page" data-nav-page="about">About</a>
           </li>
           <li class="nav-item ms-lg-2">
-            <a class="btn about-btn-outline btn-sm px-3" href="./course/">
+            <a class="btn about-btn-outline btn-sm px-3" href="./course/"
+               aria-label="Browse all courses">
               <i class="bi bi-grid-fill me-1" aria-hidden="true"></i>Browse All
             </a>
           </li>
@@ -66,7 +192,7 @@
   <!-- ═══════════════════════════════════════════
        PAGE HEADER
   ═══════════════════════════════════════════ -->
-  <header class="about-page-header" aria-label="Page header">
+  <header class="about-page-header">
     <div class="about-header-glow" aria-hidden="true"></div>
     <div class="container about-header-content">
 
@@ -78,13 +204,15 @@
               <i class="bi bi-house-fill me-1" aria-hidden="true"></i>Home
             </a>
           </li>
-          <li aria-hidden="true"><i class="bi bi-chevron-right"></i></li>
+          <li aria-hidden="true">
+            <i class="bi bi-chevron-right"></i>
+          </li>
           <li aria-current="page">About Us</li>
         </ol>
       </nav>
 
       <div class="about-header-badge mb-3" aria-hidden="true">
-        <i class="bi bi-info-circle me-2"></i>Who We Are
+        <i class="bi bi-info-circle me-2" aria-hidden="true"></i>Who We Are
       </div>
       <h1 class="about-header-title">About Us</h1>
       <p class="about-header-subtitle">
@@ -109,17 +237,17 @@
           <!-- Text -->
           <div class="col-12 col-lg-6">
             <div class="about-section-badge mb-3" aria-hidden="true">
-              <i class="bi bi-stars me-2"></i>Our Platform
+              <i class="bi bi-stars me-2" aria-hidden="true"></i>Our Platform
             </div>
             <h2 class="about-section-title" id="platform-heading">
-              Built for Learners,<br />
+              Built for Learners,<br>
               <span class="about-title-gradient">By Practitioners</span>
             </h2>
             <p class="about-body-text">
-              TTB Labs is an online learning platform dedicated to delivering
-              practical, career-focused education. Every course on our platform
-              is crafted by industry practitioners — people who work in the field
-              every day, not just teach about it.
+              <span id="brand-inline-1"></span> is an online learning platform
+              dedicated to delivering practical, career-focused education. Every
+              course on our platform is crafted by industry practitioners —
+              people who work in the field every day, not just teach about it.
             </p>
             <p class="about-body-text">
               We believe learning should be direct and friction-free. No bloated
@@ -132,7 +260,7 @@
               <div class="col-12 col-sm-6">
                 <div class="about-vm-card">
                   <div class="about-vm-icon" aria-hidden="true">
-                    <i class="bi bi-eye-fill"></i>
+                    <i class="bi bi-eye-fill" aria-hidden="true"></i>
                   </div>
                   <h3 class="about-vm-title">Our Vision</h3>
                   <p class="about-vm-text">
@@ -144,7 +272,7 @@
               <div class="col-12 col-sm-6">
                 <div class="about-vm-card about-vm-card--accent">
                   <div class="about-vm-icon about-vm-icon--teal" aria-hidden="true">
-                    <i class="bi bi-bullseye"></i>
+                    <i class="bi bi-bullseye" aria-hidden="true"></i>
                   </div>
                   <h3 class="about-vm-title">Our Mission</h3>
                   <p class="about-vm-text">
@@ -156,12 +284,10 @@
             </div>
           </div>
 
-          <!-- Visual panel -->
+          <!-- Visual panel — decorative, aria-hidden -->
           <div class="col-12 col-lg-6">
             <div class="about-visual-panel" aria-hidden="true">
-
               <div class="about-visual-inner">
-                <!-- Decorative stat blocks -->
                 <div class="about-visual-stat">
                   <i class="bi bi-journal-bookmark-fill"></i>
                   <span class="about-visual-stat-num">8+</span>
@@ -183,10 +309,7 @@
                   <span class="about-visual-stat-lbl">Guarantee</span>
                 </div>
               </div>
-
-              <!-- ambient glow -->
               <div class="about-visual-glow"></div>
-
             </div>
           </div>
 
@@ -195,14 +318,14 @@
     </section>
 
 
-    <!-- ── HOW WE WORK SECTION ── -->
+    <!-- ── HOW WE WORK ── -->
     <section class="about-section about-section--alt"
              aria-labelledby="how-heading">
       <div class="container">
 
         <div class="text-center mb-5">
           <div class="about-section-badge mb-3" aria-hidden="true">
-            <i class="bi bi-lightning-charge me-2"></i>Our Model
+            <i class="bi bi-lightning-charge me-2" aria-hidden="true"></i>Our Model
           </div>
           <h2 class="about-section-title" id="how-heading">How We Work</h2>
           <p class="about-section-subtitle">
@@ -212,27 +335,25 @@
 
         <div class="row g-4">
 
-          <!-- Card 1 -->
           <div class="col-12 col-md-6 col-lg-3">
-            <div class="about-how-card h-100">
+            <article class="about-how-card h-100">
               <div class="about-how-step" aria-hidden="true">01</div>
               <div class="about-how-icon" aria-hidden="true">
-                <i class="bi bi-grid-fill"></i>
+                <i class="bi bi-grid-fill" aria-hidden="true"></i>
               </div>
               <h3 class="about-how-title">Browse the Catalog</h3>
               <p class="about-how-text">
                 Explore our growing catalog of expert-led courses. Filter by
                 category, level, or rating to find exactly what fits your goals.
               </p>
-            </div>
+            </article>
           </div>
 
-          <!-- Card 2 -->
           <div class="col-12 col-md-6 col-lg-3">
-            <div class="about-how-card about-how-card--active h-100">
+            <article class="about-how-card about-how-card--active h-100">
               <div class="about-how-step" aria-hidden="true">02</div>
               <div class="about-how-icon" aria-hidden="true">
-                <i class="bi bi-whatsapp"></i>
+                <i class="bi bi-whatsapp" aria-hidden="true"></i>
               </div>
               <h3 class="about-how-title">Purchase via WhatsApp</h3>
               <p class="about-how-text">
@@ -240,15 +361,14 @@
                 us on WhatsApp. We confirm your payment personally — no
                 third-party checkout required.
               </p>
-            </div>
+            </article>
           </div>
 
-          <!-- Card 3 -->
           <div class="col-12 col-md-6 col-lg-3">
-            <div class="about-how-card h-100">
+            <article class="about-how-card h-100">
               <div class="about-how-step" aria-hidden="true">03</div>
               <div class="about-how-icon about-how-icon--teal" aria-hidden="true">
-                <i class="bi bi-person-check-fill"></i>
+                <i class="bi bi-person-check-fill" aria-hidden="true"></i>
               </div>
               <h3 class="about-how-title">Get Your Access</h3>
               <p class="about-how-text">
@@ -256,23 +376,21 @@
                 via WhatsApp. Your course content is hosted securely on
                 Google Drive.
               </p>
-            </div>
+            </article>
           </div>
 
-          <!-- Card 4 -->
           <div class="col-12 col-md-6 col-lg-3">
-            <div class="about-how-card h-100">
+            <article class="about-how-card h-100">
               <div class="about-how-step" aria-hidden="true">04</div>
               <div class="about-how-icon about-how-icon--cyan" aria-hidden="true">
-                <i class="bi bi-play-circle-fill"></i>
+                <i class="bi bi-play-circle-fill" aria-hidden="true"></i>
               </div>
               <h3 class="about-how-title">Start Learning</h3>
               <p class="about-how-text">
                 Log in on the course page using your credentials and dive
-                straight in. Access your course anytime, on any device,
-                for life.
+                straight in. Access your course anytime, on any device, for life.
               </p>
-            </div>
+            </article>
           </div>
 
         </div>
@@ -280,7 +398,7 @@
         <!-- Storage note -->
         <div class="about-note mt-5">
           <div class="about-note-icon" aria-hidden="true">
-            <i class="bi bi-google"></i>
+            <i class="bi bi-google" aria-hidden="true"></i>
           </div>
           <div class="about-note-body">
             <strong>Content hosting:</strong> All course materials are hosted
@@ -294,13 +412,13 @@
     </section>
 
 
-    <!-- ── VALUES SECTION ── -->
+    <!-- ── VALUES ── -->
     <section class="about-section" aria-labelledby="values-heading">
       <div class="container">
 
         <div class="text-center mb-5">
           <div class="about-section-badge mb-3" aria-hidden="true">
-            <i class="bi bi-gem me-2"></i>What We Stand For
+            <i class="bi bi-gem me-2" aria-hidden="true"></i>What We Stand For
           </div>
           <h2 class="about-section-title" id="values-heading">Our Values</h2>
           <p class="about-section-subtitle">
@@ -311,43 +429,43 @@
         <div class="row g-4 justify-content-center">
 
           <div class="col-12 col-sm-6 col-lg-4">
-            <div class="about-value-card h-100">
+            <article class="about-value-card h-100">
               <div class="about-value-icon about-value-icon--em" aria-hidden="true">
-                <i class="bi bi-patch-check-fill"></i>
+                <i class="bi bi-patch-check-fill" aria-hidden="true"></i>
               </div>
               <h3 class="about-value-title">Quality Over Quantity</h3>
               <p class="about-value-text">
-                Every course is reviewed for practical relevance before it
-                goes live. We'd rather have eight outstanding courses than
-                eighty mediocre ones.
+                Every course is reviewed for practical relevance before it goes
+                live. We'd rather have eight outstanding courses than eighty
+                mediocre ones.
               </p>
-            </div>
+            </article>
           </div>
 
           <div class="col-12 col-sm-6 col-lg-4">
-            <div class="about-value-card h-100">
+            <article class="about-value-card h-100">
               <div class="about-value-icon about-value-icon--teal" aria-hidden="true">
-                <i class="bi bi-transparency"></i>
+                <i class="bi bi-transparency" aria-hidden="true"></i>
               </div>
               <h3 class="about-value-title">Radical Transparency</h3>
               <p class="about-value-text">
                 Clear pricing, honest refund policies, and direct communication.
                 No hidden fees, no auto-renewals, no surprises.
               </p>
-            </div>
+            </article>
           </div>
 
           <div class="col-12 col-sm-6 col-lg-4">
-            <div class="about-value-card h-100">
+            <article class="about-value-card h-100">
               <div class="about-value-icon about-value-icon--cyan" aria-hidden="true">
-                <i class="bi bi-person-heart"></i>
+                <i class="bi bi-person-heart" aria-hidden="true"></i>
               </div>
               <h3 class="about-value-title">Personal Support</h3>
               <p class="about-value-text">
                 You're not a ticket number. When you reach out on WhatsApp,
                 you speak directly with a human who knows the course content.
               </p>
-            </div>
+            </article>
           </div>
 
         </div>
@@ -355,14 +473,14 @@
     </section>
 
 
-    <!-- ── CONTACT SECTION ── -->
+    <!-- ── CONTACT ── -->
     <section class="about-section about-section--alt about-contact-section"
              aria-labelledby="contact-heading">
       <div class="container">
 
         <div class="text-center mb-5">
           <div class="about-section-badge mb-3" aria-hidden="true">
-            <i class="bi bi-chat-dots me-2"></i>Get in Touch
+            <i class="bi bi-chat-dots me-2" aria-hidden="true"></i>Get in Touch
           </div>
           <h2 class="about-section-title" id="contact-heading">Contact Us</h2>
           <p class="about-section-subtitle">
@@ -375,9 +493,9 @@
 
           <!-- WhatsApp card -->
           <div class="col-12 col-sm-10 col-md-5 col-lg-4">
-            <div class="about-contact-card about-contact-card--wa h-100">
+            <article class="about-contact-card about-contact-card--wa h-100">
               <div class="about-contact-icon" aria-hidden="true">
-                <i class="bi bi-whatsapp"></i>
+                <i class="bi bi-whatsapp" aria-hidden="true"></i>
               </div>
               <h3 class="about-contact-title">WhatsApp</h3>
               <p class="about-contact-text">
@@ -388,39 +506,43 @@
                  href="#"
                  target="_blank"
                  rel="noopener noreferrer"
-                 class="btn about-btn-wa mt-auto">
+                 class="btn about-btn-wa mt-auto"
+                 aria-label="Chat with us on WhatsApp">
                 <i class="bi bi-whatsapp me-2" aria-hidden="true"></i>
                 Chat on WhatsApp
               </a>
-            </div>
+            </article>
           </div>
 
           <!-- Email card -->
           <div class="col-12 col-sm-10 col-md-5 col-lg-4">
-            <div class="about-contact-card h-100">
+            <article class="about-contact-card h-100">
               <div class="about-contact-icon about-contact-icon--teal"
                    aria-hidden="true">
-                <i class="bi bi-envelope-fill"></i>
+                <i class="bi bi-envelope-fill" aria-hidden="true"></i>
               </div>
               <h3 class="about-contact-title">Email</h3>
               <p class="about-contact-text">
                 Prefer email? Send us a message and we'll get back to you
                 within 24 hours on business days.
               </p>
-              <a href="mailto:support@ttblabs.com"
-                 class="btn about-btn-outline mt-auto">
+              <a id="contact-email-link"
+                 href="mailto:support@ttblabs.com"
+                 class="btn about-btn-outline mt-auto"
+                 aria-label="Send us an email">
                 <i class="bi bi-envelope me-2" aria-hidden="true"></i>
-                support@ttblabs.com
+                <span id="contact-email-text">support@ttblabs.com</span>
               </a>
-            </div>
+            </article>
           </div>
 
         </div>
 
         <!-- Refund note -->
-        <div class="about-note about-note--em mt-5 mx-auto" style="max-width: 640px;">
+        <div class="about-note about-note--em mt-5 mx-auto"
+             style="max-width:640px;">
           <div class="about-note-icon" aria-hidden="true">
-            <i class="bi bi-shield-check-fill"></i>
+            <i class="bi bi-shield-check-fill" aria-hidden="true"></i>
           </div>
           <div class="about-note-body">
             <strong>30-day money-back guarantee.</strong> Not satisfied with
@@ -432,7 +554,7 @@
       </div>
     </section>
 
-  </main>
+  </main><!-- /#main-content -->
 
 
   <!-- ═══════════════════════════════════════════
@@ -458,7 +580,8 @@
              href="#"
              target="_blank"
              rel="noopener noreferrer"
-             class="about-footer-social-link">
+             class="about-footer-social-link"
+             aria-label="Contact us on WhatsApp">
             <i class="bi bi-whatsapp me-1" aria-hidden="true"></i>WhatsApp
           </a>
         </div>
@@ -490,10 +613,12 @@
               <a id="footer-wa-link-2"
                  href="#"
                  target="_blank"
-                 rel="noopener noreferrer">WhatsApp</a>
+                 rel="noopener noreferrer"
+                 aria-label="Contact us on WhatsApp">WhatsApp</a>
             </li>
             <li>
-              <a href="mailto:support@ttblabs.com">Email Us</a>
+              <a id="footer-email-link"
+                 href="mailto:support@ttblabs.com">Email Us</a>
             </li>
           </ul>
         </div>

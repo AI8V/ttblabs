@@ -1,0 +1,23 @@
+# robots.txt — ttblabs.com
+
+User-agent: *
+
+# Allow all public pages
+Allow: /
+Allow: /course/
+Allow: /course/course-details/
+Allow: /about.html
+Allow: /legal/privacy.html
+Allow: /legal/terms.html
+
+# Block paid course gate — Worker-rendered, no indexing value
+Disallow: /course/paid/
+
+# Block API endpoints
+Disallow: /api/
+
+# Block assets — no indexing needed
+Disallow: /assets/
+
+# Sitemap
+Sitemap: https://ttblabs.com/sitemap.xml

@@ -3,12 +3,41 @@
 
 <head>
     <meta charset="utf-8">
+<!--
+    SEO: title + description + canonical + OG + Twitter
+    Fallback values here — course-details-app.js injects
+    final per-course values from COURSE_DATA at runtime.
+  -->
+  <title id="page-title">Course Details — Online Learning Platform</title>
+  <meta name="description"
+        id="page-desc"
+        content="Explore this expert-led online course. Learn at your own pace with lifetime access and dedicated support.">
+  <meta name="robots" id="page-robots" content="index, follow">
+  <link rel="canonical" id="page-canonical"
+        href="https://ttblabs.com/course/course-details/">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="article">
+  <meta property="og:url"         id="og-url"       content="https://ttblabs.com/course/course-details/">
+  <meta property="og:title"       id="og-title"     content="Course Details — Online Learning Platform">
+  <meta property="og:description" id="og-desc"      content="Explore this expert-led online course. Learn at your own pace with lifetime access.">
+  <meta property="og:image"       id="og-image"     content="https://ttblabs.com/assets/img/og-image.png">
+  <meta property="og:site_name"   id="og-site-name" content="TTB Labs">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       id="tw-title" content="Course Details — Online Learning Platform">
+  <meta name="twitter:description" id="tw-desc"  content="Explore this expert-led online course. Learn at your own pace with lifetime access.">
+  <meta name="twitter:image"       id="tw-image" content="https://ttblabs.com/assets/img/og-image.png">
+
+  <!-- hreflang — updated per-course by JS -->
+  <link rel="alternate" hreflang="en" id="hreflang-en"
+        href="https://ttblabs.com/course/course-details/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Course Details | Your Brand Name</title>
+    <title>Courses</title>
     <link rel="canonical" href="https://ttblabs.com/course/course-details/">
     <meta property="og:url" content="https://ttblabs.com/course/course-details/">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none';            script-src 'self' 'unsafe-inline';            style-src 'self' https://cdnjs.cloudflare.com;            font-src https://cdnjs.cloudflare.com;            img-src 'self' data:;            connect-src 'self';            form-action 'none';">
-    <meta name="description" content="Course details — Ai8V Mind &amp;amp; Machine online courses.">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none';                  script-src 'self' 'unsafe-inline';                  style-src 'self' https://cdnjs.cloudflare.com;                  font-src 'self' https://cdnjs.cloudflare.com;                  img-src 'self' data:;                  connect-src 'self';                  form-action 'none';">
     <script>
         (function() {
 
@@ -100,10 +129,62 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../../assets/css/courses.css">
     <link rel="stylesheet" href="../../assets/css/course-details.css">
+<!-- Critical CSS — loading skeleton before JS builds the page -->
+  <style>
+    :root{
+      --bg-deep:#0a0f0d;--bg-card:#111916;--bg-surface:#151d19;
+      --bg-primary:#0a0f0d;--bg-elevated:#151d19;
+      --emerald-400:#34d399;--emerald-500:#10b981;--emerald-600:#059669;
+      --emerald-700:#047857;--teal-400:#2dd4bf;--teal-600:#0d9488;
+      --cyan-400:#22d3ee;
+      --text-primary:#f0fdf4;--text-secondary:#86efac;--text-muted:#6b7f75;
+      --em-400:#34d399;--em-500:#10b981;
+      --border-subtle:rgba(52,211,153,0.1);
+      --border-color:rgba(52,211,153,0.1);
+      --speed-fast:0.15s;--speed-normal:0.3s;
+      --ease-smooth:cubic-bezier(0.4,0,0.2,1);
+      --font-base:'Inter',system-ui,-apple-system,sans-serif;
+      --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      background:#0a0f0d;color:#f0fdf4;
+      font-family:'Inter',system-ui,-apple-system,sans-serif;
+      line-height:1.6;-webkit-font-smoothing:antialiased;
+      overflow-x:hidden;margin:0;min-height:100vh;
+    }
+    /* skip link */
+    .skip-link{
+      position:fixed;top:1rem;left:1rem;z-index:9999;
+      padding:.6rem 1.2rem;background:#10b981;color:#0a0f0d;
+      font-weight:700;font-size:.9rem;border-radius:12px;
+      text-decoration:none;transform:translateY(-150%);
+      transition:transform .15s;
+    }
+    .skip-link:focus-visible{transform:translateY(0)}
+    /* loading skeleton */
+    #app:empty::after{
+      content:'';display:block;
+      min-height:100vh;background:#0a0f0d;
+    }
+    /* skeleton pulse animation */
+    @keyframes skeletonPulse{
+      0%,100%{opacity:.4}
+      50%{opacity:.8}
+    }
+    .skeleton-line{
+      background:#151d19;border-radius:6px;
+      animation:skeletonPulse 1.5s ease-in-out infinite;
+    }
+  </style>
 </head>
 
-<body>    <!-- App container — all content built dynamically by JS -->
-    <main id="app"></main>
+<body>  <!-- Skip to content -->
+  <a href="#app" class="skip-link">Skip to main content</a>
+
+  <!-- App container — all content built dynamically by course-details-app.js -->
+  <main id="app" aria-label="Course details"></main>
     <script src="../../assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/courses-data.js"></script>

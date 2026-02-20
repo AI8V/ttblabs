@@ -3,12 +3,39 @@
 
 <head>
     <meta charset="utf-8">
+<!--
+    SEO: title + description + canonical + OG + Twitter
+    Static fallback values here — home-app.js injects
+    final values from COURSE_DATA at runtime.
+  -->
+  <title id="page-title">Online Courses — Learn. Build. Grow.</title>
+  <meta name="description"
+        id="page-desc"
+        content="Expert-led online courses in Development, Design, Health, Marketing and more. Learn at your own pace with lifetime access.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" id="page-canonical" href="https://ttblabs.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         id="og-url"         content="https://ttblabs.com/">
+  <meta property="og:title"       id="og-title"       content="Online Courses — Learn. Build. Grow.">
+  <meta property="og:description" id="og-desc"        content="Expert-led online courses in Development, Design, Health, Marketing and more.">
+  <meta property="og:image"       id="og-image"       content="https://ttblabs.com/assets/img/og-image.png">
+  <meta property="og:site_name"   id="og-site-name"   content="TTB Labs">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       id="tw-title"  content="Online Courses — Learn. Build. Grow.">
+  <meta name="twitter:description" id="tw-desc"   content="Expert-led online courses in Development, Design, Health, Marketing and more.">
+  <meta name="twitter:image"       id="tw-image"  content="https://ttblabs.com/assets/img/og-image.png">
+
+  <!-- hreflang -->
+  <link rel="alternate" hreflang="en" href="https://ttblabs.com/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>TTB Labs — Learn. Build. Grow.</title>
+    <title>Courses</title>
     <link rel="canonical" href="https://ttblabs.com/">
     <meta property="og:url" content="https://ttblabs.com/">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none';            script-src 'self' 'unsafe-inline';            style-src 'self' https://cdnjs.cloudflare.com;            font-src https://cdnjs.cloudflare.com;            img-src 'self' data:;            connect-src 'self';            form-action 'none';">
-    <meta name="description" content="Explore expert-led online courses in Development, Design, Health, Marketing and more. Learn at your own pace with lifetime access.">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none';                  script-src 'self' 'unsafe-inline';                  style-src 'self' https://cdnjs.cloudflare.com;                  font-src 'self' https://cdnjs.cloudflare.com;                  img-src 'self' data:;                  connect-src 'self';                  form-action 'none';">
     <script type="application/ld+json">
         {
             "@context": "http://schema.org",
@@ -27,17 +54,140 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="assets/css/courses.css">
     <link rel="stylesheet" href="assets/css/home.css">
+<style>
+    /* ── Critical: variables subset ── */
+    :root{
+      --bg-deep:#0a0f0d;--bg-card:#111916;--bg-surface:#151d19;
+      --emerald-400:#34d399;--emerald-500:#10b981;--emerald-600:#059669;
+      --emerald-700:#047857;--teal-400:#2dd4bf;--teal-600:#0d9488;
+      --cyan-400:#22d3ee;--text-primary:#f0fdf4;--text-muted:#6b7f75;
+      --em-400:#34d399;--em-600:#059669;--em-700:#047857;
+      --border-color:rgba(52,211,153,0.1);--bg-elevated:#151d19;
+      --bg-primary:#0a0f0d;--bg-secondary:#0e1512;
+      --speed-fast:0.15s;--speed-normal:0.3s;
+      --transition-fast:0.15s;--transition-base:0.3s;
+      --font-base:'Inter',system-ui,-apple-system,sans-serif;
+      --radius-md:12px;--radius-lg:16px;
+    }
+    /* ── Critical: base ── */
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      background:#0a0f0d;color:#f0fdf4;
+      font-family:'Inter',system-ui,-apple-system,sans-serif;
+      line-height:1.6;-webkit-font-smoothing:antialiased;
+      overflow-x:hidden;margin:0;
+    }
+    /* ── Critical: skip link ── */
+    .skip-link{
+      position:fixed;top:1rem;left:1rem;z-index:9999;
+      padding:.6rem 1.2rem;background:#10b981;color:#0a0f0d;
+      font-weight:700;font-size:.9rem;border-radius:12px;
+      text-decoration:none;transform:translateY(-150%);
+      transition:transform .15s;
+    }
+    .skip-link:focus-visible{transform:translateY(0)}
+    /* ── Critical: navbar ── */
+    .home-navbar{
+      background-color:rgba(10,15,13,.92);
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(52,211,153,.1);
+      padding:.75rem 0;
+    }
+    .home-brand{
+      display:flex;align-items:center;gap:.5rem;
+      text-decoration:none;font-weight:700;font-size:1.1rem;
+      color:#f0fdf4!important;
+    }
+    .brand-icon{
+      display:flex;align-items:center;justify-content:center;
+      width:2rem;height:2rem;
+      background:linear-gradient(135deg,#059669,#0d9488);
+      border-radius:6px;color:#fff;font-size:1rem;
+    }
+    .navbar-nav .nav-link{
+      color:#86efac!important;font-size:.9rem;font-weight:500;
+      padding:.4rem .75rem!important;border-radius:6px;
+    }
+    .home-btn-outline{
+      color:#34d399!important;border:1px solid #047857!important;
+      background:transparent!important;font-weight:600;border-radius:8px;
+    }
+    /* ── Critical: hero ── */
+    .hero-section{
+      position:relative;min-height:88vh;display:flex;
+      align-items:center;overflow:hidden;
+      padding:6rem 0 4rem;background-color:#0a0f0d;
+    }
+    .hero-bg-grid{
+      position:absolute;inset:0;
+      background-image:radial-gradient(circle,rgba(16,185,129,.07) 1px,transparent 1px);
+      background-size:32px 32px;pointer-events:none;
+    }
+    .hero-glow{
+      position:absolute;top:-20%;left:50%;
+      transform:translateX(-50%);width:800px;height:800px;
+      background:radial-gradient(ellipse,rgba(16,185,129,.12) 0%,rgba(20,184,166,.06) 40%,transparent 70%);
+      pointer-events:none;
+    }
+    .hero-content{position:relative;z-index:1}
+    .hero-badge{
+      display:inline-flex;align-items:center;
+      background:rgba(16,185,129,.08);
+      border:1px solid rgba(16,185,129,.2);
+      color:#34d399;font-size:.8rem;font-weight:600;
+      letter-spacing:.05em;padding:.4rem 1.1rem;border-radius:20px;
+    }
+    .hero-title{
+      font-size:clamp(2.4rem,6vw,4rem);font-weight:800;
+      line-height:1.15;color:#f0fdf4;letter-spacing:-.02em;
+    }
+    .hero-title-line{display:inline;color:#f0fdf4}
+    .hero-title-gradient{
+      display:inline;
+      background:linear-gradient(90deg,#34d399 0%,#2dd4bf 50%,#22d3ee 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .hero-subtitle{
+      font-size:clamp(1rem,2vw,1.15rem);color:#6b7f75;
+      max-width:560px;margin-left:auto;margin-right:auto;line-height:1.7;
+    }
+    .home-btn-primary{
+      background:linear-gradient(135deg,#059669,#0d9488);
+      border:none;color:#fff!important;font-weight:600;
+      border-radius:10px;padding:.65rem 1.75rem;
+      box-shadow:0 4px 20px rgba(16,185,129,.25);
+    }
+    .home-btn-ghost{
+      background:#151d19;border:1px solid rgba(52,211,153,.1);
+      color:#86efac!important;font-weight:500;border-radius:10px;
+      padding:.65rem 1.75rem;
+    }
+    .hero-btn-main,.hero-btn-sec{font-size:1rem;padding:.75rem 2rem}
+    .hero-wave{
+      position:absolute;bottom:0;left:0;width:100%;
+      line-height:0;pointer-events:none;
+    }
+    .hero-wave svg{display:block;width:100%;height:60px}
+  </style>
 </head>
 
-<body>  <!-- ═══════════════════════════════════════════
+<body>  <!-- Skip to content -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ═══════════════════════════════════════════
        NAVBAR
   ═══════════════════════════════════════════ -->
-  <nav class="navbar navbar-expand-lg home-navbar sticky-top" aria-label="Main navigation">
+  <nav class="navbar navbar-expand-lg home-navbar sticky-top"
+       aria-label="Main navigation">
     <div class="container">
 
       <!-- Brand -->
       <a class="navbar-brand home-brand" href="./index.html">
-        <span class="brand-icon"><i class="bi bi-cpu-fill" aria-hidden="true"></i></span>
+        <span class="brand-icon" aria-hidden="true">
+          <i class="bi bi-cpu-fill" aria-hidden="true"></i>
+        </span>
         <span class="brand-text" id="nav-brand-name"></span>
       </a>
 
@@ -46,20 +196,23 @@
               data-bs-toggle="collapse" data-bs-target="#mainNav"
               aria-controls="mainNav" aria-expanded="false"
               aria-label="Toggle navigation">
-        <i class="bi bi-list fs-4" style="color: var(--em-500);" aria-hidden="true"></i>
+        <i class="bi bi-list fs-4" style="color:var(--em-500);" aria-hidden="true"></i>
       </button>
 
       <!-- Links -->
       <div class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
           <li class="nav-item">
-            <a class="nav-link" href="./index.html">Home</a>
+            <a class="nav-link" href="./index.html"
+               aria-current="page" data-nav-page="home">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./course/">Courses</a>
+            <a class="nav-link" href="./course/"
+               data-nav-page="courses">Courses</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./about.html">About</a>
+            <a class="nav-link" href="./about.html"
+               data-nav-page="about">About</a>
           </li>
           <li class="nav-item ms-lg-2">
             <a class="btn home-btn-outline btn-sm px-3" href="./course/">
@@ -74,207 +227,213 @@
 
 
   <!-- ═══════════════════════════════════════════
-       HERO
+       MAIN CONTENT
   ═══════════════════════════════════════════ -->
-  <section class="hero-section" aria-label="Hero">
-    <div class="hero-bg-grid" aria-hidden="true"></div>
-    <div class="hero-glow" aria-hidden="true"></div>
+  <main id="main-content">
 
-    <div class="container hero-content">
-      <div class="row justify-content-center text-center">
-        <div class="col-12 col-lg-9 col-xl-8">
+    <!-- ─── HERO ─── -->
+    <section class="hero-section" aria-labelledby="hero-heading">
+      <div class="hero-bg-grid" aria-hidden="true"></div>
+      <div class="hero-glow"    aria-hidden="true"></div>
 
-          <div class="hero-badge mb-4" aria-hidden="true">
-            <i class="bi bi-stars me-2"></i>Expert-Led Online Learning
-          </div>
+      <div class="container hero-content">
+        <div class="row justify-content-center text-center">
+          <div class="col-12 col-lg-9 col-xl-8">
 
-          <h1 class="hero-title mb-4">
-            <span class="hero-title-line" id="hero-title-line1"></span><br />
-            <span class="hero-title-gradient" id="hero-title-gradient"></span>
-          </h1>
-
-          <p class="hero-subtitle mb-5" id="hero-subtitle"></p>
-
-          <div class="hero-actions d-flex flex-wrap gap-3 justify-content-center">
-            <a href="./course/" class="btn home-btn-primary hero-btn-main">
-              <i class="bi bi-grid-fill me-2" aria-hidden="true"></i>Explore Courses
-            </a>
-            <a href="./about.html" class="btn home-btn-ghost hero-btn-sec">
-              <i class="bi bi-info-circle me-2" aria-hidden="true"></i>How It Works
-            </a>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- wave divider -->
-    <div class="hero-wave" aria-hidden="true">
-      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="var(--bg-primary)" />
-      </svg>
-    </div>
-  </section>
-
-
-  <!-- ═══════════════════════════════════════════
-       STATS BAR
-  ═══════════════════════════════════════════ -->
-  <section class="stats-section" aria-label="Platform statistics">
-    <div class="container">
-      <div class="stats-bar" id="stats-bar">
-        <!-- built by home-app.js -->
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ═══════════════════════════════════════════
-       FEATURED COURSES
-  ═══════════════════════════════════════════ -->
-  <section class="home-section featured-section" aria-labelledby="featured-heading">
-    <div class="container">
-
-      <div class="section-header text-center mb-5">
-        <div class="section-badge mb-3" aria-hidden="true">
-          <i class="bi bi-fire me-2"></i>Latest Releases
-        </div>
-        <h2 class="section-title" id="featured-heading">Featured Courses</h2>
-        <p class="section-subtitle">Hand-picked courses to get you started on your learning journey</p>
-      </div>
-
-      <div class="row g-4" id="featured-courses-grid" aria-live="polite">
-        <!-- built by home-app.js -->
-      </div>
-
-      <div class="text-center mt-5">
-        <a href="./course/" class="btn home-btn-outline px-5">
-          <i class="bi bi-grid me-2" aria-hidden="true"></i>View All Courses
-        </a>
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ═══════════════════════════════════════════
-       CATEGORIES
-  ═══════════════════════════════════════════ -->
-  <section class="home-section categories-section" aria-labelledby="categories-heading">
-    <div class="container">
-
-      <div class="section-header text-center mb-5">
-        <div class="section-badge mb-3" aria-hidden="true">
-          <i class="bi bi-bookmark-star me-2"></i>Browse by Topic
-        </div>
-        <h2 class="section-title" id="categories-heading">Explore Categories</h2>
-        <p class="section-subtitle">Find the right course for your goals</p>
-      </div>
-
-      <div class="row g-3 justify-content-center" id="categories-grid" aria-live="polite">
-        <!-- built by home-app.js -->
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ═══════════════════════════════════════════
-       HOW IT WORKS
-  ═══════════════════════════════════════════ -->
-  <section class="home-section how-section" aria-labelledby="how-heading">
-    <div class="container">
-
-      <div class="section-header text-center mb-5">
-        <div class="section-badge mb-3" aria-hidden="true">
-          <i class="bi bi-lightning-charge me-2"></i>Simple Process
-        </div>
-        <h2 class="section-title" id="how-heading">How It Works</h2>
-        <p class="section-subtitle">Three steps to start learning today</p>
-      </div>
-
-      <div class="row g-4 justify-content-center">
-
-        <!-- Step 1 -->
-        <div class="col-12 col-md-4">
-          <div class="how-card h-100">
-            <div class="how-step-number" aria-hidden="true">01</div>
-            <div class="how-icon mb-3" aria-hidden="true">
-              <i class="bi bi-search"></i>
+            <div class="hero-badge mb-4" aria-hidden="true">
+              <i class="bi bi-stars me-2" aria-hidden="true"></i>Expert-Led Online Learning
             </div>
-            <h3 class="how-title">Browse Courses</h3>
-            <p class="how-desc">
-              Explore our catalog of expert-led courses. Filter by category, level,
-              or rating to find exactly what you need.
-            </p>
-          </div>
-        </div>
 
-        <!-- Step 2 -->
-        <div class="col-12 col-md-4">
-          <div class="how-card how-card--accent h-100">
-            <div class="how-step-number" aria-hidden="true">02</div>
-            <div class="how-icon mb-3" aria-hidden="true">
-              <i class="bi bi-whatsapp"></i>
+            <h1 class="hero-title mb-4" id="hero-heading">
+              <span class="hero-title-line"     id="hero-title-line1"></span><br>
+              <span class="hero-title-gradient" id="hero-title-gradient"></span>
+            </h1>
+
+            <p class="hero-subtitle mb-5" id="hero-subtitle"></p>
+
+            <div class="hero-actions d-flex flex-wrap gap-3 justify-content-center">
+              <a href="./course/" class="btn home-btn-primary hero-btn-main">
+                <i class="bi bi-grid-fill me-2" aria-hidden="true"></i>Explore Courses
+              </a>
+              <a href="./about.html" class="btn home-btn-ghost hero-btn-sec">
+                <i class="bi bi-info-circle me-2" aria-hidden="true"></i>How It Works
+              </a>
             </div>
-            <h3 class="how-title">Buy via WhatsApp</h3>
-            <p class="how-desc">
-              Click "Buy Now" on any course page. You'll be connected directly with us
-              on WhatsApp to confirm your purchase — quick, personal and secure.
-            </p>
+
           </div>
         </div>
+      </div>
 
-        <!-- Step 3 -->
-        <div class="col-12 col-md-4">
-          <div class="how-card h-100">
-            <div class="how-step-number" aria-hidden="true">03</div>
-            <div class="how-icon mb-3" aria-hidden="true">
-              <i class="bi bi-play-circle-fill"></i>
-            </div>
-            <h3 class="how-title">Access Your Course</h3>
-            <p class="how-desc">
-              After payment, receive your access credentials and dive straight into
-              your course — available anytime, on any device.
-            </p>
+      <!-- wave divider -->
+      <div class="hero-wave" aria-hidden="true">
+        <svg viewBox="0 0 1440 60" preserveAspectRatio="none"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z"
+                fill="var(--bg-primary)"/>
+        </svg>
+      </div>
+    </section>
+
+
+    <!-- ─── STATS BAR ─── -->
+    <section class="stats-section" aria-label="Platform statistics">
+      <div class="container">
+        <div class="stats-bar" id="stats-bar" role="list">
+          <!-- built by home-app.js -->
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ─── FEATURED COURSES ─── -->
+    <section class="home-section featured-section"
+             aria-labelledby="featured-heading">
+      <div class="container">
+
+        <div class="section-header text-center mb-5">
+          <div class="section-badge mb-3" aria-hidden="true">
+            <i class="bi bi-fire me-2" aria-hidden="true"></i>Latest Releases
           </div>
+          <h2 class="section-title" id="featured-heading">Featured Courses</h2>
+          <p class="section-subtitle">
+            Hand-picked courses to get you started on your learning journey
+          </p>
+        </div>
+
+        <div class="row g-4" id="featured-courses-grid" aria-live="polite">
+          <!-- built by home-app.js -->
+        </div>
+
+        <div class="text-center mt-5">
+          <a href="./course/" class="btn home-btn-outline px-5">
+            <i class="bi bi-grid me-2" aria-hidden="true"></i>View All Courses
+          </a>
         </div>
 
       </div>
-    </div>
-  </section>
+    </section>
 
 
-  <!-- ═══════════════════════════════════════════
-       CTA
-  ═══════════════════════════════════════════ -->
-  <section class="cta-section" aria-labelledby="cta-heading">
-    <div class="cta-glow" aria-hidden="true"></div>
-    <div class="container cta-content text-center">
+    <!-- ─── CATEGORIES ─── -->
+    <section class="home-section categories-section"
+             aria-labelledby="categories-heading">
+      <div class="container">
 
-      <div class="section-badge mb-4" aria-hidden="true">
-        <i class="bi bi-rocket-takeoff me-2"></i>Start Today
+        <div class="section-header text-center mb-5">
+          <div class="section-badge mb-3" aria-hidden="true">
+            <i class="bi bi-bookmark-star me-2" aria-hidden="true"></i>Browse by Topic
+          </div>
+          <h2 class="section-title" id="categories-heading">Explore Categories</h2>
+          <p class="section-subtitle">Find the right course for your goals</p>
+        </div>
+
+        <div class="row g-3 justify-content-center"
+             id="categories-grid" aria-live="polite">
+          <!-- built by home-app.js -->
+        </div>
+
       </div>
-      <h2 class="cta-title mb-3" id="cta-heading">
-        Ready to level up your skills?
-      </h2>
-      <p class="cta-subtitle mb-5">
-        Join thousands of learners already growing with our courses.
-        Browse the full catalog and find your perfect course today.
-      </p>
+    </section>
 
-      <div class="d-flex flex-wrap gap-3 justify-content-center">
-        <a href="./course/" class="btn home-btn-primary cta-btn-main">
-          <i class="bi bi-grid-fill me-2" aria-hidden="true"></i>Browse All Courses
-        </a>
-        <a id="cta-whatsapp-btn" href="#" target="_blank" rel="noopener noreferrer"
-           class="btn home-btn-whatsapp cta-btn-wa">
-          <i class="bi bi-whatsapp me-2" aria-hidden="true"></i>Contact on WhatsApp
-        </a>
+
+    <!-- ─── HOW IT WORKS ─── -->
+    <section class="home-section how-section"
+             aria-labelledby="how-heading">
+      <div class="container">
+
+        <div class="section-header text-center mb-5">
+          <div class="section-badge mb-3" aria-hidden="true">
+            <i class="bi bi-lightning-charge me-2" aria-hidden="true"></i>Simple Process
+          </div>
+          <h2 class="section-title" id="how-heading">How It Works</h2>
+          <p class="section-subtitle">Three steps to start learning today</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+
+          <!-- Step 1 -->
+          <div class="col-12 col-md-4">
+            <article class="how-card h-100">
+              <div class="how-step-number" aria-hidden="true">01</div>
+              <div class="how-icon mb-3" aria-hidden="true">
+                <i class="bi bi-search" aria-hidden="true"></i>
+              </div>
+              <h3 class="how-title">Browse Courses</h3>
+              <p class="how-desc">
+                Explore our catalog of expert-led courses. Filter by category,
+                level, or rating to find exactly what you need.
+              </p>
+            </article>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="col-12 col-md-4">
+            <article class="how-card how-card--accent h-100">
+              <div class="how-step-number" aria-hidden="true">02</div>
+              <div class="how-icon mb-3" aria-hidden="true">
+                <i class="bi bi-whatsapp" aria-hidden="true"></i>
+              </div>
+              <h3 class="how-title">Buy via WhatsApp</h3>
+              <p class="how-desc">
+                Click "Buy Now" on any course page. You'll be connected directly
+                with us on WhatsApp to confirm your purchase — quick, personal
+                and secure.
+              </p>
+            </article>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="col-12 col-md-4">
+            <article class="how-card h-100">
+              <div class="how-step-number" aria-hidden="true">03</div>
+              <div class="how-icon mb-3" aria-hidden="true">
+                <i class="bi bi-play-circle-fill" aria-hidden="true"></i>
+              </div>
+              <h3 class="how-title">Access Your Course</h3>
+              <p class="how-desc">
+                After payment, receive your access credentials and dive straight
+                into your course — available anytime, on any device.
+              </p>
+            </article>
+          </div>
+
+        </div>
       </div>
+    </section>
 
-    </div>
-  </section>
+
+    <!-- ─── CTA ─── -->
+    <section class="cta-section" aria-labelledby="cta-heading">
+      <div class="cta-glow" aria-hidden="true"></div>
+      <div class="container cta-content text-center">
+
+        <div class="section-badge mb-4" aria-hidden="true">
+          <i class="bi bi-rocket-takeoff me-2" aria-hidden="true"></i>Start Today
+        </div>
+        <h2 class="cta-title mb-3" id="cta-heading">
+          Ready to level up your skills?
+        </h2>
+        <p class="cta-subtitle mb-5">
+          Join thousands of learners already growing with our courses.
+          Browse the full catalog and find your perfect course today.
+        </p>
+
+        <div class="d-flex flex-wrap gap-3 justify-content-center">
+          <a href="./course/" class="btn home-btn-primary cta-btn-main">
+            <i class="bi bi-grid-fill me-2" aria-hidden="true"></i>Browse All Courses
+          </a>
+          <a id="cta-whatsapp-btn" href="#" target="_blank"
+             rel="noopener noreferrer"
+             class="btn home-btn-whatsapp cta-btn-wa"
+             aria-label="Contact us on WhatsApp">
+            <i class="bi bi-whatsapp me-2" aria-hidden="true"></i>Contact on WhatsApp
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </main><!-- /#main-content -->
 
 
   <!-- ═══════════════════════════════════════════
@@ -288,15 +447,17 @@
         <!-- Brand col -->
         <div class="col-12 col-md-4">
           <div class="footer-brand mb-3">
-            <i class="bi bi-cpu-fill me-2" style="color:var(--em-500);" aria-hidden="true"></i>
+            <i class="bi bi-cpu-fill me-2"
+               style="color:var(--em-500);" aria-hidden="true"></i>
             <span id="footer-brand-name"></span>
           </div>
           <p class="footer-tagline">
-            Expert-led online courses designed to take you from beginner to professional.
-            Learn at your own pace with lifetime access.
+            Expert-led online courses designed to take you from beginner
+            to professional. Learn at your own pace with lifetime access.
           </p>
-          <a id="footer-whatsapp-link" href="#" target="_blank" rel="noopener noreferrer"
-             class="footer-social-link">
+          <a id="footer-whatsapp-link" href="#" target="_blank"
+             rel="noopener noreferrer" class="footer-social-link"
+             aria-label="Contact us on WhatsApp">
             <i class="bi bi-whatsapp me-1" aria-hidden="true"></i>WhatsApp
           </a>
         </div>
@@ -328,7 +489,7 @@
           </ul>
         </div>
 
-      </div>
+      </div><!-- /.row -->
 
       <!-- Footer bottom -->
       <div class="footer-bottom">
