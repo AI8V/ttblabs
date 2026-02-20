@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html data-bs-theme="auto" lang="en">
+<html lang="en" data-bs-theme="dark" data-bss-forced-theme="dark">
 
 <head>
-    <meta charset="utf-8">
-<!--
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+  <!--
     SEO: title + description + canonical + OG + Twitter
     Fallback values here — course-details-app.js injects
     final per-course values from COURSE_DATA at runtime.
@@ -33,103 +35,42 @@
   <!-- hreflang — updated per-course by JS -->
   <link rel="alternate" hreflang="en" id="hreflang-en"
         href="https://ttblabs.com/course/course-details/">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Courses</title>
-    <link rel="canonical" href="https://ttblabs.com/course/course-details/">
-    <meta property="og:url" content="https://ttblabs.com/course/course-details/">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none';                  script-src 'self' 'unsafe-inline';                  style-src 'self' https://cdnjs.cloudflare.com;                  font-src 'self' https://cdnjs.cloudflare.com;                  img-src 'self' data:;                  connect-src 'self';                  form-action 'none';">
-    <script>
-        (function() {
 
-            // JavaScript snippet handling Dark/Light mode switching
+  <!-- CSP — font-src 'self' for Inter self-hosted -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none';
+                 script-src 'self' 'unsafe-inline';
+                 style-src 'self' https://cdnjs.cloudflare.com;
+                 font-src 'self' https://cdnjs.cloudflare.com;
+                 img-src 'self' data:;
+                 connect-src 'self';
+                 form-action 'none';">
 
-            const getStoredTheme = () => localStorage.getItem('theme');
-            const setStoredTheme = theme => localStorage.setItem('theme', theme);
-            const forcedTheme = document.documentElement.getAttribute('data-bss-forced-theme');
+  <!-- JSON-LD injected by course-details-app.js per course -->
 
-            const getPreferredTheme = () => {
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180"
+        href="../../assets/img/fav180.png">
+  <link rel="icon" type="image/png" sizes="32x32"
+        href="../../assets/img/fav32.png">
+  <link rel="icon" type="image/png" sizes="32x32"
+        href="../../assets/img/fav32D.png"
+        media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/png" sizes="16x16"
+        href="../../assets/img/fav16.png">
+  <link rel="icon" type="image/png" sizes="16x16"
+        href="../../assets/img/fav16D.png"
+        media="(prefers-color-scheme: dark)">
 
-                if (forcedTheme) return forcedTheme;
+  <!-- Preload critical font — path from /course/course-details/ -->
+  <link rel="preload" href="../../assets/fonts/inter-variable.woff2"
+        as="font" type="font/woff2" crossorigin="anonymous">
 
-                const storedTheme = getStoredTheme();
-                if (storedTheme) {
-                    return storedTheme;
-                }
+  <!-- Preload Bootstrap CSS -->
+  <link rel="preload" href="../../assets/bootstrap/css/bootstrap.min.css"
+        as="style">
 
-                const pageTheme = document.documentElement.getAttribute('data-bs-theme');
-
-                if (pageTheme) {
-                    return pageTheme;
-                }
-
-                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            }
-
-            const setTheme = theme => {
-                if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    document.documentElement.setAttribute('data-bs-theme', 'dark');
-                } else {
-                    document.documentElement.setAttribute('data-bs-theme', theme);
-                }
-            }
-
-            setTheme(getPreferredTheme());
-
-            const showActiveTheme = (theme, focus = false) => {
-                const themeSwitchers = [].slice.call(document.querySelectorAll('.theme-switcher'));
-
-                if (!themeSwitchers.length) return;
-
-                document.querySelectorAll('[data-bs-theme-value]').forEach(element => {
-                    element.classList.remove('active');
-                    element.setAttribute('aria-pressed', 'false');
-                });
-
-                for (const themeSwitcher of themeSwitchers) {
-
-                    const btnToActivate = themeSwitcher.querySelector('[data-bs-theme-value="' + theme + '"]');
-
-                    if (btnToActivate) {
-                        btnToActivate.classList.add('active');
-                        btnToActivate.setAttribute('aria-pressed', 'true');
-                    }
-                }
-            }
-
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-                const storedTheme = getStoredTheme();
-                if (storedTheme !== 'light' && storedTheme !== 'dark') {
-                    setTheme(getPreferredTheme());
-                }
-            });
-
-            window.addEventListener('DOMContentLoaded', () => {
-                showActiveTheme(getPreferredTheme());
-
-                document.querySelectorAll('[data-bs-theme-value]')
-                    .forEach(toggle => {
-                        toggle.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            const theme = toggle.getAttribute('data-bs-theme-value');
-                            setStoredTheme(theme);
-                            setTheme(theme);
-                            showActiveTheme(theme);
-                        })
-                    })
-            });
-        })();
-    </script>
-    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../../assets/img/fav180.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/fav16.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/fav16D.png" media="(prefers-color-scheme: dark)">
-    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/fav32.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/fav32D.png" media="(prefers-color-scheme: dark)">
-    <link rel="icon" type="image/png" sizes="180x180" href="../../assets/img/fav180.png">
-    <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../../assets/css/courses.css">
-    <link rel="stylesheet" href="../../assets/css/course-details.css">
-<!-- Critical CSS — loading skeleton before JS builds the page -->
+  <!-- Critical CSS — loading skeleton before JS builds the page -->
   <style>
     :root{
       --bg-deep:#0a0f0d;--bg-card:#111916;--bg-surface:#151d19;
@@ -178,18 +119,29 @@
       animation:skeletonPulse 1.5s ease-in-out infinite;
     }
   </style>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../../assets/css/courses.css">
+  <link rel="stylesheet" href="../../assets/css/course-details.css">
 </head>
 
-<body>  <!-- Skip to content -->
+<body>
+
+  <!-- Skip to content -->
   <a href="#app" class="skip-link">Skip to main content</a>
 
   <!-- App container — all content built dynamically by course-details-app.js -->
   <main id="app" aria-label="Course details"></main>
-    <script src="../../assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/utils.js"></script>
-    <script src="../../assets/js/courses-data.js"></script>
-    <script src="../../assets/js/ratings-system.js"></script>
-    <script src="../../assets/js/course-details-app.js"></script>
-</body>
 
+  <!-- Scripts — deferred, non-blocking -->
+  <script src="../../assets/bootstrap/js/bootstrap.min.js"    defer></script>
+  <script src="../../assets/js/utils.js"                      defer></script>
+  <script src="../../assets/js/courses-data.js"               defer></script>
+  <script src="../../assets/js/ratings-system.js"             defer></script>
+  <script src="../../assets/js/course-details-app.js"         defer></script>
+
+</body>
 </html>

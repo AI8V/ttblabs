@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html data-bs-theme="dark" lang="en" data-bss-forced-theme="dark">
+<html lang="en" data-bs-theme="dark" data-bss-forced-theme="dark">
 
 <head>
-    <meta charset="utf-8">
-<!-- SEO — injected at runtime by legal-app.js from COURSE_DATA -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+  <!-- SEO — injected at runtime by legal-app.js from COURSE_DATA -->
   <title id="page-title">Privacy Policy — Online Learning Platform</title>
   <meta name="description"
         id="page-desc"
@@ -27,22 +29,36 @@
 
   <!-- hreflang -->
   <link rel="alternate" hreflang="en" href="https://ttblabs.com/legal/privacy.html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Courses</title>
-    <link rel="canonical" href="https://ttblabs.com/legal/privacy.html">
-    <meta property="og:url" content="https://ttblabs.com/legal/privacy.html">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none';                  script-src 'self' 'unsafe-inline';                  style-src 'self' https://cdnjs.cloudflare.com;                  font-src 'self' https://cdnjs.cloudflare.com;                  img-src 'self' data:;                  connect-src 'self';                  form-action 'none';">
-    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../assets/img/fav180.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/fav16.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/fav16D.png" media="(prefers-color-scheme: dark)">
-    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/fav32.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/fav32D.png" media="(prefers-color-scheme: dark)">
-    <link rel="icon" type="image/png" sizes="180x180" href="../assets/img/fav180.png">
-    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../assets/css/courses.css">
-    <link rel="stylesheet" href="../assets/css/legal.css">
-<!-- Critical CSS — Navbar + Page Header above-the-fold -->
+
+  <!-- CSP — font-src 'self' for Inter self-hosted -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none';
+                 script-src 'self' 'unsafe-inline';
+                 style-src 'self' https://cdnjs.cloudflare.com;
+                 font-src 'self' https://cdnjs.cloudflare.com;
+                 img-src 'self' data:;
+                 connect-src 'self';
+                 form-action 'none';">
+
+  <!-- JSON-LD injected by legal-app.js -->
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../assets/img/fav180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/fav32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/fav32D.png"
+        media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/fav16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/fav16D.png"
+        media="(prefers-color-scheme: dark)">
+
+  <!-- Preload critical font — path from /legal/ -->
+  <link rel="preload" href="../assets/fonts/inter-variable.woff2"
+        as="font" type="font/woff2" crossorigin="anonymous">
+
+  <!-- Preload Bootstrap CSS -->
+  <link rel="preload" href="../assets/bootstrap/css/bootstrap.min.css" as="style">
+
+  <!-- Critical CSS — Navbar + Page Header above-the-fold -->
   <style>
     :root{
       --bg-deep:#0a0f0d;--bg-card:#111916;--bg-surface:#151d19;
@@ -132,9 +148,18 @@
       flex-wrap:wrap;margin:0;
     }
   </style>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../assets/css/courses.css">
+  <link rel="stylesheet" href="../assets/css/legal.css">
 </head>
 
-<body>  <!-- Skip to content -->
+<body>
+
+  <!-- Skip to content -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <!-- ═══════════════════════════════════════════
@@ -899,10 +924,12 @@
 
     </div>
   </footer>
-    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../assets/js/utils.js"></script>
-    <script src="../assets/js/courses-data.js"></script>
-    <script src="../assets/js/legal-app.js"></script>
-</body>
 
+  <!-- Scripts — deferred, non-blocking -->
+  <script src="../assets/bootstrap/js/bootstrap.min.js" defer></script>
+  <script src="../assets/js/utils.js"                   defer></script>
+  <script src="../assets/js/courses-data.js"            defer></script>
+  <script src="../assets/js/legal-app.js"               defer></script>
+
+</body>
 </html>
